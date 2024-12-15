@@ -4,4 +4,4 @@ import plotly.express as px
 
 df = pd.DataFrame([[2,4],[4,6],[0,5]])
 
-st.table(res)
+st.table(df)
