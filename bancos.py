@@ -10,6 +10,6 @@ def baixar(arquivo, id):
     gdown.download(url, arquivo, quiet=False)
     return pd.read_csv(arquivo)
 
-ativo = baixar("ativo.csv", "1P3uuEzSlofgdNH_TK04MxYZU2Q_Wq7QA")
+ativo = baixar("ativo.csv", "1R_y8vtNABZO35PeoyuvZouEZDYIuBJdm")
 
 st.table(ativo[:10])
