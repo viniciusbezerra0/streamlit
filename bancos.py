@@ -10,9 +10,9 @@ def baixar(arquivo, id):
     gdown.download(url, arquivo, quiet=False)
     return pd.read_csv(arquivo)
 
-capital_resumo = baixar("capital.csv", "12xnRhBcTi_0bryw1OcwSl9V19VWNlEQy")
+#capital_resumo = baixar("capital.csv", "12xnRhBcTi_0bryw1OcwSl9V19VWNlEQy")
 #resumo_financeiro = baixar("resumo_consolidado.csv", "14jyMjIe3P9HUUypmmpWd806XexYCtj-c")
-#ativo = baixar("ativo.csv", "1R_y8vtNABZO35PeoyuvZouEZDYIuBJdm")
+ativo = baixar("ativo.csv", "1R_y8vtNABZO35PeoyuvZouEZDYIuBJdm")
 #passivo = baixar("passivo.csv", "1dhHMgSIC_bvdblg2OzMmr1kHYA7fYSIX")
 #dre = baixar("dre.csv", "1eiRk3ZnPlSRMyp4ZoiFKg-M4d7MQmSBz")
 #eh_historico = baixar("eh_historico.csv", "1Ss1pmXRrvxT0FH775ok9dBYogF3QLDxm")
@@ -22,4 +22,4 @@ capital_resumo = baixar("capital.csv", "12xnRhBcTi_0bryw1OcwSl9V19VWNlEQy")
 #carteira_pj = baixar("carteira_pj_resumo.csv", "1125I0cQmhvCR7_oO60PQmpZicC5wY9ld")
 #perc_pf = baixar("perc_pf.csv", "1luCZeOTeLhoZ9N-mbNbNxW7pMN8h0IjR")
 
-st.table(capital_resumo)
+st.table(ativo)
