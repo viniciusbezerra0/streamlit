@@ -11,5 +11,7 @@ def baixar(arquivo, id):
     return pd.read_csv(arquivo)
 
 ativo = baixar("ativo.csv", "1R_y8vtNABZO35PeoyuvZouEZDYIuBJdm")
+passivo = baixar("passivo.csv", "1dhHMgSIC_bvdblg2OzMmr1kHYA7fYSIX")
+dre = baixar("dre.csv", "1eiRk3ZnPlSRMyp4ZoiFKg-M4d7MQmSBz")
 
 st.table(ativo[:10])
