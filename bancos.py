@@ -29,8 +29,6 @@ empresas=capital_resumo["Empresa"].unique()
 anos = range(2009,2025)  # Adapte para o intervalo de anos que você deseja
 ordem_trimestres = [f'{i}T{str(ano)[-2:]}' for ano in anos for i in range(1, 5)]
 
-# Garantir que 'AnoMes' seja tratada como uma categoria ordenada
-eh_historico=pd.read_csv(path + "eh_historico.csv")
 eh_historico["AnoMes"]=eh_historico["AnoMes"].astype(str)
 eh_historico['AnoMes'] = pd.Categorical(eh_historico['AnoMes'], categories=ordem_trimestres, ordered=True)
 eh_historico['ordem'] = eh_historico['AnoMes'].apply(lambda x: int(x[2:]) * 10 + int(x[0]))
@@ -41,23 +39,13 @@ ordem_trimestres = [f'{i}T{str(year)[-2:]}' for year in range(2009, 2025) for i 
 
 # Definir 'AnoMes' como uma variável categórica com a ordem correta
 eh_historico['AnoMes'] = pd.Categorical(eh_historico['AnoMes'], categories=ordem_trimestres, ordered=True)
-resumo_risco=pd.read_csv(path + "carteira_risco_resumo.csv")
 
-resumo_geografico=pd.read_csv(path + "carteira_geografica_resumo.csv")
-
-
-carteira_pf=pd.read_csv(path + "carteira_pf_resumo.csv")
 carteira_pf['ordem'] = carteira_pf['AnoMes'].apply(lambda x: int(x[2:]) * 10 + int(x[0]))
 carteira_pf=carteira_pf.sort_values(by='ordem')
 carteira_pf=carteira_pf.drop_duplicates(subset=['Grupo', 'Empresa', 'AnoMes'])
 
-carteira_pj=pd.read_csv(path + "carteira_pj_resumo.csv")
 carteira_pj['ordem'] = carteira_pj['AnoMes'].apply(lambda x: int(x[2:]) * 10 + int(x[0]))
 carteira_pj=carteira_pj.sort_values(by='ordem')
-
-perc_pf=pd.read_csv((path + "perc_pf.csv"))
-
-
 
 
 cat=st.sidebar.selectbox("Escolha a categora",["Principais indicadores","Carteira","Resumo", "Demonstrativos"])
