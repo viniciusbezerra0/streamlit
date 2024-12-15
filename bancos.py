@@ -12,4 +12,4 @@ def baixar(arquivo, id):
 
 ativo = baixar("ativo.csv", "1P3uuEzSlofgdNH_TK04MxYZU2Q_Wq7QA")
 
-st.write('funcionou')
+st.table(ativo[:10])
