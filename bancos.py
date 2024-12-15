@@ -9,6 +9,6 @@ def baixar(arquivo, url):
     gdown.download(url, arquivo, quiet=False)
     return pd.read_csv(arquivo)
 
-ativo = baixar("perc_pf.csv", "https://drive.google.com/file/d/1QKPGQiP6QIPQDMQg9Ygdlfg4l3snkZYI/view?usp=drive_link")
+ativo = baixar("ativo.csv", "https://drive.google.com/file/d/12xnRhBcTi_0bryw1OcwSl9V19VWNlEQy/view?usp=drive_link")
 
 st.table(ativo)
