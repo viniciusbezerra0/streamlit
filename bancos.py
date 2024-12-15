@@ -5,11 +5,10 @@ import gdown
 
 st.set_page_config(layout='wide', initial_sidebar_state='expanded')
 
-def baixar(arquivo, id):
-    url = f'https://drive.google.com/uc?id={id}'
+def baixar(arquivo, url):
     gdown.download(url, arquivo, quiet=False)
     return pd.read_csv(arquivo)
 
-ativo = baixar("perc_pf.csv", "1QKPGQiP6QIPQDMQg9Ygdlfg4l3snkZYI")
+ativo = baixar("perc_pf.csv", "https://drive.google.com/file/d/1QKPGQiP6QIPQDMQg9Ygdlfg4l3snkZYI/view?usp=drive_link")
 
 st.table(ativo)
