@@ -1,11 +1,18 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-
 st.set_page_config(layout='wide', initial_sidebar_state='expanded')
 
-cat=st.sidebar.selectbox("Escolha a categora",["Principais indicadores","Carteira","Resumo", "Demonstrativos"])
+#path = "C:/Users/samy/Heritage Capital Partners/Heritage Capital Partners - Network/Analises/03_Bancos/Dash/bases/"
+path = "C:/Users/vini/OneDrive - Heritage Capital Partners/Network/Analises/03_Bancos/Dash/bases/"
+
+#streamlit run "C:/Users/vini/OneDrive - Heritage Capital Partners/Network/Analises/03_Bancos/Dash/bancos.py"
+#streamlit run "C:\Users\samy\Heritage Capital Partners\Heritage Capital Partners - Network\Analises\03_Bancos\Dash\bancos.py"
+
+cat=st.sidebar.selectbox("",["Escolha a categoria", "Principais indicadores","Carteira","Resumo", "Demonstrativos"])
+
 if cat=="Principais indicadores":
+
     capital_resumo = pd.read_csv("https://www.dropbox.com/scl/fi/ejsxtv1sbh94kost7b55z/resumo_consolidado.csv?rlkey=9671yb7e3x36cpcoasfhxhcti&st=q2reiuec&dl=1")
     resumo_financeiro = pd.read_csv("https://www.dropbox.com/scl/fi/ejsxtv1sbh94kost7b55z/resumo_consolidado.csv?rlkey=9671yb7e3x36cpcoasfhxhcti&st=n3ekt1sk&dl=1")
     resumo_financeiro_invertido = resumo_financeiro.iloc[::-1]
@@ -84,7 +91,6 @@ if cat=="Principais indicadores":
 
 #aba carteira
 if cat=="Carteira":
-
     st.markdown("### Análise da carteira")
     #st.columns(1,2)
     anos = range(2009,2025)  # Adapte para o intervalo de anos que você deseja
@@ -196,12 +202,10 @@ if cat=="Carteira":
 
 
 if cat=="Resumo":
-
-    ativo =pd.read_csv(path + "ativo.csv")
-    passivo =pd.read_csv(path + "passivo.csv")
-    bp = pd.concat([ativo,passivo])
-    dre =pd.read_csv(path + "dre.csv")
     
+    capital_resumo = pd.read_csv("https://www.dropbox.com/scl/fi/ejsxtv1sbh94kost7b55z/resumo_consolidado.csv?rlkey=9671yb7e3x36cpcoasfhxhcti&st=q2reiuec&dl=1")
+    resumo_financeiro = pd.read_csv("https://www.dropbox.com/scl/fi/ejsxtv1sbh94kost7b55z/resumo_consolidado.csv?rlkey=9671yb7e3x36cpcoasfhxhcti&st=n3ekt1sk&dl=1")
+
     empresas0 = capital_resumo["Empresa"].unique()
     
     lista = ['Captacoes','Carteira de Credito Classificada','Indice de Basileia','Patrimonio Liquido','Lucro liquido trimestral','ROAE']
@@ -421,11 +425,11 @@ if cat=="Demonstrativos":
     passivo = pd.read_csv("https://www.dropbox.com/scl/fi/ehu4556wdpreqcz6dik3n/passivo.csv?rlkey=8yspk90ifqdk8cbqdloqebybl&st=n4yj18g4&dl=1")
     bp = pd.concat([ativo,passivo])
     dre = pd.read_csv("https://www.dropbox.com/scl/fi/rk9kadi4bw1psuoxtkcf6/dre.csv?rlkey=ybp2kcfz49whtyc9p9lyejcho&st=f1nc6pn0&dl=1")
-    
+
     empresas = dre["Empresa"].unique()
 
     tri = []
-    for i in capital_resumo['AnoMes']:
+    for i in dre['AnoMes']:
         if i not in tri:
             tri.append(i)
     
