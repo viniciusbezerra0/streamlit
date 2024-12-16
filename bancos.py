@@ -4,9 +4,9 @@ import plotly.express as px
 
 st.set_page_config(layout='wide', initial_sidebar_state='expanded')
 
-capital_resumo = pd.read_csv("https://drive.google.com/uc?id=12xnRhBcTi_0bryw1OcwSl9V19VWNlEQy")
+capital_resumo = pd.read_csv("https://www.dropbox.com/scl/fi/ejsxtv1sbh94kost7b55z/resumo_consolidado.csv?rlkey=9671yb7e3x36cpcoasfhxhcti&st=q2reiuec&dl=1")
 
-resumo_financeiro = pd.read_csv("https://drive.google.com/uc?id=14jyMjIe3P9HUUypmmpWd806XexYCtj-c")
+resumo_financeiro = pd.read_csv("https://www.dropbox.com/scl/fi/ejsxtv1sbh94kost7b55z/resumo_consolidado.csv?rlkey=9671yb7e3x36cpcoasfhxhcti&st=n3ekt1sk&dl=1")
 resumo_financeiro_invertido = resumo_financeiro.iloc[::-1]
 
 cat=st.sidebar.selectbox("Escolha a categora",["Principais indicadores","Carteira","Resumo", "Demonstrativos"])
@@ -93,7 +93,7 @@ if cat=="Carteira":
     ordem_trimestres = [f'{i}T{str(ano)[-2:]}' for ano in anos for i in range(1, 5)]
 
     # Garantir que 'AnoMes' seja tratada como uma categoria ordenada
-    eh_historico = pd.read_csv("https://drive.google.com/uc?id=1Ss1pmXRrvxT0FH775ok9dBYogF3QLDxm")
+    eh_historico = pd.read_csv("https://www.dropbox.com/scl/fi/2jtqjc2dsu76vgpxux8lu/eh_historico.csv?rlkey=ejzep2tfz6ozskf7xshoxsgyb&st=mtow25yq&dl=1")
     eh_historico["AnoMes"]=eh_historico["AnoMes"].astype(str)
     eh_historico['AnoMes'] = pd.Categorical(eh_historico['AnoMes'], categories=ordem_trimestres, ordered=True)
     eh_historico['ordem'] = eh_historico['AnoMes'].apply(lambda x: int(x[2:]) * 10 + int(x[0]))
@@ -104,21 +104,21 @@ if cat=="Carteira":
 
     # Definir 'AnoMes' como uma variável categórica com a ordem correta
     eh_historico['AnoMes'] = pd.Categorical(eh_historico['AnoMes'], categories=ordem_trimestres, ordered=True)
-    resumo_risco = pd.read_csv("https://drive.google.com/uc?id=1P3uuEzSlofgdNH_TK04MxYZU2Q_Wq7QA")
+    resumo_risco = pd.read_csv("https://www.dropbox.com/scl/fi/4hxy1ybzx9qgcriogp4nl/carteira_risco_resumo.csv?rlkey=lsoes0p29srqmrovac7ec9hc0&st=4arkto6c&dl=1")
     
-    resumo_geografico = pd.read_csv("https://drive.google.com/uc?id=1nDsVB6rbBPTMkDP6jzSI8UT6hInDFVp7")
+    resumo_geografico = pd.read_csv("https://www.dropbox.com/scl/fi/qbz2sn5739qjz8vcrz4vf/carteira_geografica_resumo.csv?rlkey=nc7opydob8qgp0g4ecaookgoh&st=ajx2ljgc&dl=1")
 
     
-    carteira_pf = pd.read_csv("https://drive.google.com/uc?id=1SYqSqDg_cYQMHSYzqP8p6PCM0-L9v5ha")
+    carteira_pf = pd.read_csv("https://www.dropbox.com/scl/fi/cstzinswurt4xvmboan8s/carteira_pf_resumo.csv?rlkey=pea2hxmzs3kal4pxauzmrr50g&st=r0jqkjcu&dl=1")
     carteira_pf['ordem'] = carteira_pf['AnoMes'].apply(lambda x: int(x[2:]) * 10 + int(x[0]))
     carteira_pf=carteira_pf.sort_values(by='ordem')
     carteira_pf=carteira_pf.drop_duplicates(subset=['Grupo', 'Empresa', 'AnoMes'])
 
-    carteira_pj = pd.read_csv("https://drive.google.com/uc?id=1125I0cQmhvCR7_oO60PQmpZicC5wY9ld")
+    carteira_pj = pd.read_csv("https://www.dropbox.com/scl/fi/8rznxo5ukznpbk08nbloh/carteira_pj_resumo.csv?rlkey=lzltv9zui34y6w5bhbhsewtw1&st=l8anom0l&dl=1")
     carteira_pj['ordem'] = carteira_pj['AnoMes'].apply(lambda x: int(x[2:]) * 10 + int(x[0]))
     carteira_pj=carteira_pj.sort_values(by='ordem')
 
-    perc_pf = pd.read_csv("https://drive.google.com/uc?id=1luCZeOTeLhoZ9N-mbNbNxW7pMN8h0IjR")
+    perc_pf = pd.read_csv("https://www.dropbox.com/scl/fi/lxd50xfaukxikn3nyhby3/perc_pf.csv?rlkey=9sbsf0qjsg0wuvozbl43z28nr&st=fwgloj86&dl=1")
     col1, col2 = st.columns(2)
     with col1:
         filtro=st.multiselect("Selecione as empresas",empresas)
@@ -419,10 +419,10 @@ if cat=="Resumo":
 
 if cat=="Demonstrativos":
 
-    ativo = pd.read_csv("https://drive.google.com/uc?id=1R_y8vtNABZO35PeoyuvZouEZDYIuBJdm")
-    passivo = pd.read_csv("https://drive.google.com/uc?id=1dhHMgSIC_bvdblg2OzMmr1kHYA7fYSIX")
+    ativo = pd.read_csv("https://www.dropbox.com/scl/fi/t9e1bmpmb9p3bh4uzf98m/ativo.csv?rlkey=uxf02uxo1jobo81oq3l3ge2kj&st=hv67yfc4&dl=1")
+    passivo = pd.read_csv("https://www.dropbox.com/scl/fi/ehu4556wdpreqcz6dik3n/passivo.csv?rlkey=8yspk90ifqdk8cbqdloqebybl&st=n4yj18g4&dl=1")
     bp = pd.concat([ativo,passivo])
-    dre = pd.read_csv("https://drive.google.com/uc?id=1eiRk3ZnPlSRMyp4ZoiFKg-M4d7MQmSBz")
+    dre = pd.read_csv("https://www.dropbox.com/scl/fi/rk9kadi4bw1psuoxtkcf6/dre.csv?rlkey=ybp2kcfz49whtyc9p9lyejcho&st=f1nc6pn0&dl=1")
     
     empresas = dre["Empresa"].unique()
 
