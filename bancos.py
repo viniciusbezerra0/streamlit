@@ -4,14 +4,13 @@ import plotly.express as px
 
 st.set_page_config(layout='wide', initial_sidebar_state='expanded')
 
-capital_resumo = pd.read_csv("https://www.dropbox.com/scl/fi/ejsxtv1sbh94kost7b55z/resumo_consolidado.csv?rlkey=9671yb7e3x36cpcoasfhxhcti&st=q2reiuec&dl=1")
-
-resumo_financeiro = pd.read_csv("https://www.dropbox.com/scl/fi/ejsxtv1sbh94kost7b55z/resumo_consolidado.csv?rlkey=9671yb7e3x36cpcoasfhxhcti&st=n3ekt1sk&dl=1")
-resumo_financeiro_invertido = resumo_financeiro.iloc[::-1]
-
-cat=st.sidebar.selectbox("Escolha a categora",["Principais indicadores","Carteira","Resumo", "Demonstrativos"])
+cat=st.sidebar.selectbox(["Escolha a categoria", "Principais indicadores","Carteira","Resumo", "Demonstrativos"])
 
 if cat=="Principais indicadores":
+    capital_resumo = pd.read_csv("https://www.dropbox.com/scl/fi/ejsxtv1sbh94kost7b55z/resumo_consolidado.csv?rlkey=9671yb7e3x36cpcoasfhxhcti&st=q2reiuec&dl=1")
+    resumo_financeiro = pd.read_csv("https://www.dropbox.com/scl/fi/ejsxtv1sbh94kost7b55z/resumo_consolidado.csv?rlkey=9671yb7e3x36cpcoasfhxhcti&st=n3ekt1sk&dl=1")
+    resumo_financeiro_invertido = resumo_financeiro.iloc[::-1]
+
     empresas=capital_resumo["Empresa"].unique()
     col1, col2 = st.columns(2)
     with col1:
