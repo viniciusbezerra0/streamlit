@@ -13,7 +13,7 @@ cat=st.sidebar.selectbox("",["Escolha a categoria", "Principais indicadores","Ca
 
 if cat=="Principais indicadores":
 
-    capital_resumo = pd.read_csv("https://www.dropbox.com/scl/fi/ejsxtv1sbh94kost7b55z/resumo_consolidado.csv?rlkey=9671yb7e3x36cpcoasfhxhcti&st=q2reiuec&dl=1")
+    capital_resumo = pd.read_csv("https://www.dropbox.com/scl/fi/28wj9hnc8fo7u0qdz0n91/capital.csv?rlkey=bhl1mjdl0nuy91856rosgk87c&st=kj7o5zj2&dl=1")
     resumo_financeiro = pd.read_csv("https://www.dropbox.com/scl/fi/ejsxtv1sbh94kost7b55z/resumo_consolidado.csv?rlkey=9671yb7e3x36cpcoasfhxhcti&st=n3ekt1sk&dl=1")
     resumo_financeiro_invertido = resumo_financeiro.iloc[::-1]
 
@@ -203,7 +203,7 @@ if cat=="Carteira":
 
 if cat=="Resumo":
     
-    capital_resumo = pd.read_csv("https://www.dropbox.com/scl/fi/ejsxtv1sbh94kost7b55z/resumo_consolidado.csv?rlkey=9671yb7e3x36cpcoasfhxhcti&st=q2reiuec&dl=1")
+    capital_resumo = pd.read_csv("https://www.dropbox.com/scl/fi/28wj9hnc8fo7u0qdz0n91/capital.csv?rlkey=bhl1mjdl0nuy91856rosgk87c&st=kj7o5zj2&dl=1")
     resumo_financeiro = pd.read_csv("https://www.dropbox.com/scl/fi/ejsxtv1sbh94kost7b55z/resumo_consolidado.csv?rlkey=9671yb7e3x36cpcoasfhxhcti&st=n3ekt1sk&dl=1")
 
     empresas0 = capital_resumo["Empresa"].unique()
