@@ -19,8 +19,6 @@ perc_pf = pd.read_csv("https://drive.google.com/uc?id=1luCZeOTeLhoZ9N-mbNbNxW7pM
 
 bp = pd.concat([ativo,passivo])
 
-empresas=capital_resumo["Empresa"].unique()
-
 anos = range(2009,2025)  # Adapte para o intervalo de anos que você deseja
 ordem_trimestres = [f'{i}T{str(ano)[-2:]}' for ano in anos for i in range(1, 5)]
 
