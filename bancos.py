@@ -4,7 +4,7 @@ import plotly.express as px
 
 st.set_page_config(layout='wide', initial_sidebar_state='expanded')
 
-cat=st.sidebar.selectbox(["Escolha a categoria", "Principais indicadores","Carteira","Resumo", "Demonstrativos"])
+cat=st.sidebar.selectbox("",["Escolha a categoria", "Principais indicadores","Carteira","Resumo", "Demonstrativos"])
 
 if cat=="Principais indicadores":
     capital_resumo = pd.read_csv("https://www.dropbox.com/scl/fi/ejsxtv1sbh94kost7b55z/resumo_consolidado.csv?rlkey=9671yb7e3x36cpcoasfhxhcti&st=q2reiuec&dl=1")
