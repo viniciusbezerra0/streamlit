@@ -1,49 +1,18 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-import gdown
 
 st.set_page_config(layout='wide', initial_sidebar_state='expanded')
 
 capital_resumo = pd.read_csv("https://drive.google.com/uc?id=12xnRhBcTi_0bryw1OcwSl9V19VWNlEQy")
+
 resumo_financeiro = pd.read_csv("https://drive.google.com/uc?id=14jyMjIe3P9HUUypmmpWd806XexYCtj-c")
-ativo = pd.read_csv("https://drive.google.com/uc?id=1R_y8vtNABZO35PeoyuvZouEZDYIuBJdm")
-passivo = pd.read_csv("https://drive.google.com/uc?id=1dhHMgSIC_bvdblg2OzMmr1kHYA7fYSIX")
-dre = pd.read_csv("https://drive.google.com/uc?id=1eiRk3ZnPlSRMyp4ZoiFKg-M4d7MQmSBz")
-eh_historico = pd.read_csv("https://drive.google.com/uc?id=1Ss1pmXRrvxT0FH775ok9dBYogF3QLDxm")
-resumo_risco = pd.read_csv("https://drive.google.com/uc?id=1P3uuEzSlofgdNH_TK04MxYZU2Q_Wq7QA")
-resumo_geografico = pd.read_csv("https://drive.google.com/uc?id=1nDsVB6rbBPTMkDP6jzSI8UT6hInDFVp7")
-carteira_pf = pd.read_csv("https://drive.google.com/uc?id=1SYqSqDg_cYQMHSYzqP8p6PCM0-L9v5ha")
-carteira_pj = pd.read_csv("https://drive.google.com/uc?id=1125I0cQmhvCR7_oO60PQmpZicC5wY9ld")
-perc_pf = pd.read_csv("https://drive.google.com/uc?id=1luCZeOTeLhoZ9N-mbNbNxW7pMN8h0IjR")
-
-bp = pd.concat([ativo,passivo])
-
-anos = range(2009,2025)  # Adapte para o intervalo de anos que você deseja
-ordem_trimestres = [f'{i}T{str(ano)[-2:]}' for ano in anos for i in range(1, 5)]
-
-eh_historico["AnoMes"]=eh_historico["AnoMes"].astype(str)
-eh_historico['AnoMes'] = pd.Categorical(eh_historico['AnoMes'], categories=ordem_trimestres, ordered=True)
-eh_historico['ordem'] = eh_historico['AnoMes'].apply(lambda x: int(x[2:]) * 10 + int(x[0]))
-eh_historico=eh_historico.sort_values(by='ordem')
-empresas=eh_historico["Empresa"].unique()
-
-ordem_trimestres = [f'{i}T{str(year)[-2:]}' for year in range(2009, 2025) for i in range(1, 5)]
-
-# Definir 'AnoMes' como uma variável categórica com a ordem correta
-eh_historico['AnoMes'] = pd.Categorical(eh_historico['AnoMes'], categories=ordem_trimestres, ordered=True)
-
-carteira_pf['ordem'] = carteira_pf['AnoMes'].apply(lambda x: int(x[2:]) * 10 + int(x[0]))
-carteira_pf=carteira_pf.sort_values(by='ordem')
-carteira_pf=carteira_pf.drop_duplicates(subset=['Grupo', 'Empresa', 'AnoMes'])
-
-carteira_pj['ordem'] = carteira_pj['AnoMes'].apply(lambda x: int(x[2:]) * 10 + int(x[0]))
-carteira_pj=carteira_pj.sort_values(by='ordem')
-
+resumo_financeiro_invertido = resumo_financeiro.iloc[::-1]
 
 cat=st.sidebar.selectbox("Escolha a categora",["Principais indicadores","Carteira","Resumo", "Demonstrativos"])
 
 if cat=="Principais indicadores":
+    empresas=capital_resumo["Empresa"].unique()
     col1, col2 = st.columns(2)
     with col1:
         filtro=st.multiselect("Selecione as empresas",empresas)
@@ -117,8 +86,39 @@ if cat=="Principais indicadores":
 
 #aba carteira
 if cat=="Carteira":
+
     st.markdown("### Análise da carteira")
+    #st.columns(1,2)
+    anos = range(2009,2025)  # Adapte para o intervalo de anos que você deseja
+    ordem_trimestres = [f'{i}T{str(ano)[-2:]}' for ano in anos for i in range(1, 5)]
+
+    # Garantir que 'AnoMes' seja tratada como uma categoria ordenada
+    eh_historico = pd.read_csv("https://drive.google.com/uc?id=1Ss1pmXRrvxT0FH775ok9dBYogF3QLDxm")
+    eh_historico["AnoMes"]=eh_historico["AnoMes"].astype(str)
+    eh_historico['AnoMes'] = pd.Categorical(eh_historico['AnoMes'], categories=ordem_trimestres, ordered=True)
+    eh_historico['ordem'] = eh_historico['AnoMes'].apply(lambda x: int(x[2:]) * 10 + int(x[0]))
+    eh_historico=eh_historico.sort_values(by='ordem')
+    empresas=eh_historico["Empresa"].unique()
+
+    ordem_trimestres = [f'{i}T{str(year)[-2:]}' for year in range(2009, 2025) for i in range(1, 5)]
+
+    # Definir 'AnoMes' como uma variável categórica com a ordem correta
+    eh_historico['AnoMes'] = pd.Categorical(eh_historico['AnoMes'], categories=ordem_trimestres, ordered=True)
+    resumo_risco = pd.read_csv("https://drive.google.com/uc?id=1P3uuEzSlofgdNH_TK04MxYZU2Q_Wq7QA")
     
+    resumo_geografico = pd.read_csv("https://drive.google.com/uc?id=1nDsVB6rbBPTMkDP6jzSI8UT6hInDFVp7")
+
+    
+    carteira_pf = pd.read_csv("https://drive.google.com/uc?id=1SYqSqDg_cYQMHSYzqP8p6PCM0-L9v5ha")
+    carteira_pf['ordem'] = carteira_pf['AnoMes'].apply(lambda x: int(x[2:]) * 10 + int(x[0]))
+    carteira_pf=carteira_pf.sort_values(by='ordem')
+    carteira_pf=carteira_pf.drop_duplicates(subset=['Grupo', 'Empresa', 'AnoMes'])
+
+    carteira_pj = pd.read_csv("https://drive.google.com/uc?id=1125I0cQmhvCR7_oO60PQmpZicC5wY9ld")
+    carteira_pj['ordem'] = carteira_pj['AnoMes'].apply(lambda x: int(x[2:]) * 10 + int(x[0]))
+    carteira_pj=carteira_pj.sort_values(by='ordem')
+
+    perc_pf = pd.read_csv("https://drive.google.com/uc?id=1luCZeOTeLhoZ9N-mbNbNxW7pMN8h0IjR")
     col1, col2 = st.columns(2)
     with col1:
         filtro=st.multiselect("Selecione as empresas",empresas)
@@ -198,6 +198,13 @@ if cat=="Carteira":
 
 
 if cat=="Resumo":
+
+    ativo =pd.read_csv(path + "ativo.csv")
+    passivo =pd.read_csv(path + "passivo.csv")
+    bp = pd.concat([ativo,passivo])
+    dre =pd.read_csv(path + "dre.csv")
+    
+    empresas0 = capital_resumo["Empresa"].unique()
     
     lista = ['Captacoes','Carteira de Credito Classificada','Indice de Basileia','Patrimonio Liquido','Lucro liquido trimestral','ROAE']
     rf = resumo_financeiro[resumo_financeiro['NomeColuna'].isin(lista)]
@@ -219,7 +226,7 @@ if cat=="Resumo":
 
     col1, col2 = st.columns(2)
     with col1:
-        empresass = st.multiselect("Selecione as empresas",empresas)
+        empresas = st.multiselect("Selecione as empresas",empresas0)
     with col2:
         # O slider seleciona um intervalo entre os trimestres disponíveis
         selected_range = st.select_slider(
@@ -235,10 +242,10 @@ if cat=="Resumo":
         # Fatiando a lista tri com os índices encontrados
         tris = tri[start_idx:end_idx + 1]
 
-    if len(empresass) > 0 and len(tris) > 2:
+    if len(empresas) > 0 and len(tris) > 2:
         dfs = []
-        falt = pd.DataFrame([[0] * (3 * len(empresass) + 3)] * (len(lista)+1))
-        for empresa in empresass:
+        falt = pd.DataFrame([[0] * (3 * len(empresas) + 3)] * (len(lista)+1))
+        for empresa in empresas:
             ult = [0] * (len(lista) + 1)
             ltm = [0] * (len(lista) + 1)
             med = [0] * (len(lista) + 1)
@@ -251,15 +258,15 @@ if cat=="Resumo":
             med[0] = df0[-len(tris):]['Saldo'].sum(skipna=True)/df0[-len(tris):]['Saldo'].count()
 
             if df0[-4:]['Saldo'].count() < 4:
-                falt.loc[0, len(empresass) + empresass.index(empresa) + 1] = 1
-                falt.loc[1, len(empresass) + empresass.index(empresa) + 1] = 1
-                falt.loc[0, (len(empresass)+1)*2 - 1] = 1
-                falt.loc[1, (len(empresass)+1)*2 - 1] = 1
+                falt.loc[0, len(empresas) + empresas.index(empresa) + 1] = 1
+                falt.loc[1, len(empresas) + empresas.index(empresa) + 1] = 1
+                falt.loc[0, (len(empresas)+1)*2 - 1] = 1
+                falt.loc[1, (len(empresas)+1)*2 - 1] = 1
             if df0[-len(tris):]['Saldo'].count() < len(tris):
-                falt.loc[0, (len(empresass) + 1)*2 + empresass.index(empresa)] = 1
-                falt.loc[1, (len(empresass) + 1)*2 + empresass.index(empresa)] = 1
-                falt.loc[0, (len(empresass)+1)*3 - 1] = 1
-                falt.loc[1, (len(empresass)+1)*3 - 1] = 1
+                falt.loc[0, (len(empresas) + 1)*2 + empresas.index(empresa)] = 1
+                falt.loc[1, (len(empresas) + 1)*2 + empresas.index(empresa)] = 1
+                falt.loc[0, (len(empresas)+1)*3 - 1] = 1
+                falt.loc[1, (len(empresas)+1)*3 - 1] = 1
                 
                 
             #Patrimônio Líquido
@@ -270,15 +277,15 @@ if cat=="Resumo":
             med[2] = df0[-len(tris):]['Saldo'].sum(skipna=True)/df0[-len(tris):]['Saldo'].count()
 
             if df0[-4:]['Saldo'].count() < 4:
-                falt.loc[2, len(empresass) + empresass.index(empresa) + 1] = 1
-                falt.loc[1, len(empresass) + empresass.index(empresa) + 1] = 1
-                falt.loc[2, (len(empresass)+1)*2 - 1] = 1
-                falt.loc[1, (len(empresass)+1)*2 - 1] = 1
+                falt.loc[2, len(empresas) + empresas.index(empresa) + 1] = 1
+                falt.loc[1, len(empresas) + empresas.index(empresa) + 1] = 1
+                falt.loc[2, (len(empresas)+1)*2 - 1] = 1
+                falt.loc[1, (len(empresas)+1)*2 - 1] = 1
             if df0[-len(tris):]['Saldo'].count() < len(tris):
-                falt.loc[2, (len(empresass) + 1)*2 + empresass.index(empresa)] = 1
-                falt.loc[1, (len(empresass) + 1)*2 + empresass.index(empresa)] = 1
-                falt.loc[2, (len(empresass)+1)*3 - 1] = 1
-                falt.loc[1, (len(empresass)+1)*3 - 1] = 1
+                falt.loc[2, (len(empresas) + 1)*2 + empresas.index(empresa)] = 1
+                falt.loc[1, (len(empresas) + 1)*2 + empresas.index(empresa)] = 1
+                falt.loc[2, (len(empresas)+1)*3 - 1] = 1
+                falt.loc[1, (len(empresas)+1)*3 - 1] = 1
             
             
             #ROAE
@@ -293,11 +300,11 @@ if cat=="Resumo":
             med[3] = df0[-len(tris):]['Saldo'].sum(skipna=True)/df0[-len(tris):]['Saldo'].count()
 
             if df0[-4:]['Saldo'].count() < 4:
-                falt.loc[3, len(empresass) + empresass.index(empresa) + 1] = 1
-                falt.loc[3, (len(empresass)+1)*2 - 1] = 1
+                falt.loc[3, len(empresas) + empresas.index(empresa) + 1] = 1
+                falt.loc[3, (len(empresas)+1)*2 - 1] = 1
             if df0[-len(tris):]['Saldo'].count() < len(tris):
-                falt.loc[3, (len(empresass) + 1)*2 + empresass.index(empresa)] = 1
-                falt.loc[3, (len(empresass)+1)*3 - 1] = 1
+                falt.loc[3, (len(empresas) + 1)*2 + empresas.index(empresa)] = 1
+                falt.loc[3, (len(empresas)+1)*3 - 1] = 1
                 
 
             df0 = df[df['Empresa'] == empresa]
@@ -307,11 +314,11 @@ if cat=="Resumo":
             med[4] = df0[-len(tris):]['Saldo'].sum(skipna=True)/df0[-len(tris):]['Saldo'].count()
 
             if df0[-4:]['Saldo'].count() < 4:
-                falt.loc[4, len(empresass) + empresass.index(empresa) + 1] = 1
-                falt.loc[4, (len(empresass)+1)*2 - 1] = 1
+                falt.loc[4, len(empresas) + empresas.index(empresa) + 1] = 1
+                falt.loc[4, (len(empresas)+1)*2 - 1] = 1
             if df0[-len(tris):]['Saldo'].count() < len(tris):
-                falt.loc[4, (len(empresass) + 1)*2 + empresass.index(empresa)] = 1
-                falt.loc[4, (len(empresass)+1)*3 - 1] = 1
+                falt.loc[4, (len(empresas) + 1)*2 + empresas.index(empresa)] = 1
+                falt.loc[4, (len(empresas)+1)*3 - 1] = 1
             
             
             df0 = df[df['Empresa'] == empresa]
@@ -321,11 +328,11 @@ if cat=="Resumo":
             med[5] = df0[-len(tris):]['Saldo'].sum(skipna=True)/df0[-len(tris):]['Saldo'].count()
 
             if df0[-4:]['Saldo'].count() < 4:
-                falt.loc[5, len(empresass) + empresass.index(empresa) + 1] = 1
-                falt.loc[5, (len(empresass)+1)*2 - 1] = 1
+                falt.loc[5, len(empresas) + empresas.index(empresa) + 1] = 1
+                falt.loc[5, (len(empresas)+1)*2 - 1] = 1
             if df0[-len(tris):]['Saldo'].count() < len(tris):
-                falt.loc[5, (len(empresass) + 1)*2 + empresass.index(empresa)] = 1
-                falt.loc[5, (len(empresass)+1)*3 - 1] = 1
+                falt.loc[5, (len(empresas) + 1)*2 + empresas.index(empresa)] = 1
+                falt.loc[5, (len(empresas)+1)*3 - 1] = 1
             
 
             #CET1
@@ -336,11 +343,11 @@ if cat=="Resumo":
             med[6] = df0[-len(tris):]['Saldo'].sum(skipna=True)/df0[-len(tris):]['Saldo'].count()
             
             if df0[-4:]['Saldo'].count() < 4:
-                falt.loc[6, len(empresass) + empresass.index(empresa) + 1] = 1
-                falt.loc[6, (len(empresass)+1)*2 - 1] = 1
+                falt.loc[6, len(empresas) + empresas.index(empresa) + 1] = 1
+                falt.loc[6, (len(empresas)+1)*2 - 1] = 1
             if df0[-len(tris):]['Saldo'].count() < len(tris):
-                falt.loc[6, (len(empresass) + 1)*2 + empresass.index(empresa)] = 1
-                falt.loc[6, (len(empresass)+1)*3 - 1] = 1
+                falt.loc[6, (len(empresas) + 1)*2 + empresas.index(empresa)] = 1
+                falt.loc[6, (len(empresas)+1)*3 - 1] = 1
             
 
             df0 = pd.DataFrame([ult,ltm,med]).T  # Usando .T para transpor (mudar linhas por colunas)
@@ -355,7 +362,7 @@ if cat=="Resumo":
             df0 = [df.iloc[:, i] for df in dfs]
             df0 = pd.DataFrame(df0).T
             df0['Média'] = df0.mean(axis=1)
-            df0.columns = empresass + ['Média']
+            df0.columns = empresas + ['Média']
             dfs0.append(df0)
         dfs = pd.concat(dfs0, axis=1, keys=dfs[0].keys())
 
@@ -411,6 +418,13 @@ if cat=="Resumo":
 
 
 if cat=="Demonstrativos":
+
+    ativo = pd.read_csv("https://drive.google.com/uc?id=1R_y8vtNABZO35PeoyuvZouEZDYIuBJdm")
+    passivo = pd.read_csv("https://drive.google.com/uc?id=1dhHMgSIC_bvdblg2OzMmr1kHYA7fYSIX")
+    bp = pd.concat([ativo,passivo])
+    dre = pd.read_csv("https://drive.google.com/uc?id=1eiRk3ZnPlSRMyp4ZoiFKg-M4d7MQmSBz")
+    
+    empresas = dre["Empresa"].unique()
 
     tri = []
     for i in capital_resumo['AnoMes']:
