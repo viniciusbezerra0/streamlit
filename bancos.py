@@ -9,7 +9,25 @@ path = "C:/Users/vini/OneDrive - Heritage Capital Partners/Network/Analises/03_B
 #streamlit run "C:/Users/vini/OneDrive - Heritage Capital Partners/Network/Analises/03_Bancos/Dash/bancos.py"
 #streamlit run "C:\Users\samy\Heritage Capital Partners\Heritage Capital Partners - Network\Analises\03_Bancos\Dash\bancos.py"
 
-image_path = "https://www.dropbox.com/scl/fi/3gra61tqh9pstrav9dyfs/logo.png?rlkey=3yayojmnxi56nm12mjzzv46lv&st=4vgd5eda&dl=1"
+image_path = "https://drive.google.com/uc?export=download&id=1ApfkHQ6jRsNtWrVdt0CmS6cPKIV6BWtV"
+
+links0 = [['ativo.csv','https://drive.google.com/file/d/1R_y8vtNABZO35PeoyuvZouEZDYIuBJdm/view?usp=drive_link'],
+       ['capital.csv','https://drive.google.com/file/d/12xnRhBcTi_0bryw1OcwSl9V19VWNlEQy/view?usp=drive_link'],
+       ['carteira_geografica_resumo.csv','https://drive.google.com/file/d/1nDsVB6rbBPTMkDP6jzSI8UT6hInDFVp7/view?usp=drive_link'],
+       ['carteira_pf_resumo.csv','https://drive.google.com/file/d/1SYqSqDg_cYQMHSYzqP8p6PCM0-L9v5ha/view?usp=drive_link'],
+       ['carteira_pj_resumo.csv','https://drive.google.com/file/d/1125I0cQmhvCR7_oO60PQmpZicC5wY9ld/view?usp=drive_link'],
+       ['carteira_risco_resumo.csv','https://drive.google.com/file/d/1P3uuEzSlofgdNH_TK04MxYZU2Q_Wq7QA/view?usp=drive_link'],
+       ['eh_historico.csv','https://drive.google.com/file/d/1eiRk3ZnPlSRMyp4ZoiFKg-M4d7MQmSBz/view?usp=drive_link'],
+       ['dre.csv','https://drive.google.com/file/d/1Ss1pmXRrvxT0FH775ok9dBYogF3QLDxm/view?usp=drive_link'],
+       ['empresastrimestres.csv','https://drive.google.com/file/d/18idu1IHVAmD5h2VM5GXvhWW7AEKEZ_yW/view?usp=drive_link'],
+       ['passivo.csv','https://drive.google.com/file/d/1dhHMgSIC_bvdblg2OzMmr1kHYA7fYSIX/view?usp=drive_link'],
+       ['perc_pf.csv','https://drive.google.com/file/d/1luCZeOTeLhoZ9N-mbNbNxW7pMN8h0IjR/view?usp=drive_link'],
+       ['resumo_consolidado.csv','https://drive.google.com/file/d/14jyMjIe3P9HUUypmmpWd806XexYCtj-c/view?usp=drive_link']]
+
+links = []
+for i in range(len(links0)):
+    links.append([links0[i][0], "https://drive.google.com/uc?export=download&id=" + links0[i][1][links0[i][1].index("/d/")+3:links0[i][1].index("/view")]])
+
 
 # HTML e CSS para centralizar a imagem na sidebar
 html = f"""
@@ -33,7 +51,7 @@ st.sidebar.markdown(html, unsafe_allow_html=True)
 cat=st.sidebar.selectbox("",["Escolha a categoria", "Principais indicadores","Carteira","Resumo", "Demonstrativos"])
 
 if cat != "Escolha a categoria":
-    emptri = pd.read_csv(path + "empresastrimestres.csv")
+    emptri = pd.read_csv(next(link for nome, link in links if nome == 'empresastrimestres.csv'))
     empresas = list(emptri['0'].unique())
     trimestres = list(emptri['1'].unique())
 
@@ -48,8 +66,8 @@ if cat=="Principais indicadores":
         if len(filtro) > 0:
             
             if len(capital_resumo) < 1:
-                capital_resumo = pd.read_csv(path + "capital.csv", low_memory=False)
-                resumo_financeiro = pd.read_csv(path + "resumo_consolidado.csv")
+                capital_resumo = pd.read_csv(next(link for nome, link in links if nome == 'capital.csv'))
+                resumo_financeiro = pd.read_csv(next(link for nome, link in links if nome == 'resumo_consolidado.csv'))
                 resumo_financeiro_invertido = resumo_financeiro.iloc[::-1]
             capital_resumo_filtrado= capital_resumo[capital_resumo["Empresa"].isin(filtro)]
             capital_resumo_filtrado= capital_resumo_filtrado[capital_resumo_filtrado["Nome"]=="CET1"]
@@ -105,7 +123,7 @@ if cat=="Principais indicadores":
         filtro_unico=st.selectbox("", ["Selecione a empresa"] + empresas)
         if filtro_unico != "Selecione a empresa":
             if len(capital_resumo) < 1:
-                capital_resumo = pd.read_csv(path + "capital.csv", low_memory=False)
+                capital_resumo = pd.read_csv(next(link for nome, link in links if nome == 'capital.csv'))
             capital_resumo_filtrado= capital_resumo[capital_resumo["Empresa"]==filtro_unico]
             fig = px.bar(
             capital_resumo_filtrado[capital_resumo_filtrado["Nome"].isin(['CET1', 'AT1', 'tier_2'])],
@@ -142,7 +160,7 @@ if cat=="Carteira":
         ordem_trimestres = [f'{i}T{str(ano)[-2:]}' for ano in anos for i in range(1, 5)]
 
         # Garantir que 'AnoMes' seja tratada como uma categoria ordenada
-        eh_historico=pd.read_csv(path + "eh_historico.csv")
+        eh_historico=pd.read_csv(next(link for nome, link in links if nome == 'eh_historico.csv'))
         eh_historico["AnoMes"]=eh_historico["AnoMes"].astype(str)
         eh_historico['AnoMes'] = pd.Categorical(eh_historico['AnoMes'], categories=ordem_trimestres, ordered=True)
         eh_historico['ordem'] = eh_historico['AnoMes'].apply(lambda x: int(x[2:]) * 10 + int(x[0]))
@@ -152,20 +170,20 @@ if cat=="Carteira":
 
         # Definir 'AnoMes' como uma variável categórica com a ordem correta
         eh_historico['AnoMes'] = pd.Categorical(eh_historico['AnoMes'], categories=ordem_trimestres, ordered=True)
-        resumo_risco=pd.read_csv(path + "carteira_risco_resumo.csv")
+        resumo_risco=pd.read_csv(next(link for nome, link in links if nome == 'carteira_risco_resumo.csv'))
         
-        resumo_geografico=pd.read_csv(path + "carteira_geografica_resumo.csv")
+        resumo_geografico=pd.read_csv(next(link for nome, link in links if nome == "carteira_geografica_resumo.csv"))
         
-        carteira_pf=pd.read_csv(path + "carteira_pf_resumo.csv")
+        carteira_pf=pd.read_csv(next(link for nome, link in links if nome == 'carteira_pf_resumo.csv'))
         carteira_pf['ordem'] = carteira_pf['AnoMes'].apply(lambda x: int(x[2:]) * 10 + int(x[0]))
         carteira_pf=carteira_pf.sort_values(by='ordem')
         carteira_pf=carteira_pf.drop_duplicates(subset=['Grupo', 'Empresa', 'AnoMes'])
 
-        carteira_pj=pd.read_csv(path + "carteira_pj_resumo.csv")
+        carteira_pj=pd.read_csv(next(link for nome, link in links if nome == 'carteira_pj_resumo.csv'))
         carteira_pj['ordem'] = carteira_pj['AnoMes'].apply(lambda x: int(x[2:]) * 10 + int(x[0]))
         carteira_pj=carteira_pj.sort_values(by='ordem')
 
-        perc_pf=pd.read_csv((path + "perc_pf.csv"))
+        perc_pf=pd.read_csv(next(link for nome, link in links if nome == 'perc_pf.csv'))
 
 
         with col1:
@@ -258,8 +276,8 @@ if cat=="Resumo":
 
     if len(empresas0) > 0 and len(tris) > 2:
 
-        capital_resumo=pd.read_csv(path + "capital.csv", low_memory=False)
-        resumo_financeiro=pd.read_csv(path + "resumo_consolidado.csv")
+        capital_resumo=pd.read_csv(next(link for nome, link in links if nome == 'capital.csv'))
+        resumo_financeiro=pd.read_csv(next(link for nome, link in links if nome == 'resumo_consolidado.csv'))
         
         lista = ['Captacoes','Carteira de Credito Classificada','Indice de Basileia','Patrimonio Liquido','Lucro liquido trimestral','ROAE']
         rf = resumo_financeiro[resumo_financeiro['NomeColuna'].isin(lista)]
@@ -510,8 +528,8 @@ if cat=="Demonstrativos":
 
         if demonstrativo == 'Balanço patrimonial':
 
-            ativo =pd.read_csv(path + "ativo.csv")
-            passivo =pd.read_csv(path + "passivo.csv")
+            ativo = pd.read_csv(next(link for nome, link in links if nome == 'ativo.csv'))
+            passivo = pd.read_csv(next(link for nome, link in links if nome == 'passivo.csv'))
             bp = pd.concat([ativo,passivo])
 
             def trimestre_to_num(trimestre):
@@ -590,7 +608,7 @@ if cat=="Demonstrativos":
 
         elif demonstrativo == "DRE":
 
-            dre =pd.read_csv(path + "dre.csv")
+            dre = pd.read_csv(next(link for nome, link in links if nome == 'dre.csv'))
 
             res = dre[dre['Empresa'] == empresa].reset_index()
             def trimestre_to_num(trimestre):
