@@ -9,25 +9,20 @@ path = "C:/Users/vini/OneDrive - Heritage Capital Partners/Network/Analises/03_B
 #streamlit run "C:/Users/vini/OneDrive - Heritage Capital Partners/Network/Analises/03_Bancos/Dash/bancos.py"
 #streamlit run "C:\Users\samy\Heritage Capital Partners\Heritage Capital Partners - Network\Analises\03_Bancos\Dash\bancos.py"
 
-image_path = "https://drive.google.com/uc?export=view&id=1ApfkHQ6jRsNtWrVdt0CmS6cPKIV6BWtV"
+image_path = "https://download938.mediafire.com/joigbxggsp0gQYnJagJO9X4xzIwgycH-pipyDCccEckeryP63DBYmDEiyv7uBl9I97bOSCwlp26jF3eZC4R3EIP04pJjo-U4ag1dP3g4Mls_m8nUNL15wr6GlsqqgXH-AvflKehnV8eCuK0w6RhmM5Cy09IC_WUTlhLaELq94ifk/a8ygud00q3hu6j6/ativo.csv"
 
-links0 = [['ativo.csv','https://drive.google.com/file/d/1R_y8vtNABZO35PeoyuvZouEZDYIuBJdm/view?usp=drive_link'],
-       ['capital.csv','https://drive.google.com/file/d/12xnRhBcTi_0bryw1OcwSl9V19VWNlEQy/view?usp=drive_link'],
-       ['carteira_geografica_resumo.csv','https://drive.google.com/file/d/1nDsVB6rbBPTMkDP6jzSI8UT6hInDFVp7/view?usp=drive_link'],
-       ['carteira_pf_resumo.csv','https://drive.google.com/file/d/1SYqSqDg_cYQMHSYzqP8p6PCM0-L9v5ha/view?usp=drive_link'],
-       ['carteira_pj_resumo.csv','https://drive.google.com/file/d/1125I0cQmhvCR7_oO60PQmpZicC5wY9ld/view?usp=drive_link'],
-       ['carteira_risco_resumo.csv','https://drive.google.com/file/d/1P3uuEzSlofgdNH_TK04MxYZU2Q_Wq7QA/view?usp=drive_link'],
-       ['dre.csv','https://drive.google.com/file/d/1eiRk3ZnPlSRMyp4ZoiFKg-M4d7MQmSBz/view?usp=drive_link'],
-       ['eh_historico.csv','https://drive.google.com/file/d/1Ss1pmXRrvxT0FH775ok9dBYogF3QLDxm/view?usp=drive_link'],
-       ['empresastrimestres.csv','https://drive.google.com/file/d/18idu1IHVAmD5h2VM5GXvhWW7AEKEZ_yW/view?usp=drive_link'],
-       ['passivo.csv','https://drive.google.com/file/d/1dhHMgSIC_bvdblg2OzMmr1kHYA7fYSIX/view?usp=drive_link'],
-       ['perc_pf.csv','https://drive.google.com/file/d/1luCZeOTeLhoZ9N-mbNbNxW7pMN8h0IjR/view?usp=drive_link'],
-       ['resumo_consolidado.csv','https://drive.google.com/file/d/14jyMjIe3P9HUUypmmpWd806XexYCtj-c/view?usp=drive_link']]
-
-links = []
-for i in range(len(links0)):
-    links.append([links0[i][0], "https://drive.google.com/uc?export=download&id=" + links0[i][1][links0[i][1].index("/d/")+3:links0[i][1].index("/view")]])
-
+links = [['ativo.csv','https://download938.mediafire.com/joigbxggsp0gQYnJagJO9X4xzIwgycH-pipyDCccEckeryP63DBYmDEiyv7uBl9I97bOSCwlp26jF3eZC4R3EIP04pJjo-U4ag1dP3g4Mls_m8nUNL15wr6GlsqqgXH-AvflKehnV8eCuK0w6RhmM5Cy09IC_WUTlhLaELq94ifk/a8ygud00q3hu6j6/ativo.csv'],
+       ['capital.csv','https://download1322.mediafire.com/34he8d9pvkkgEuiBGi0rG1wiRy4GEdssrf_aBwBkDkmuZRMCEAJjvsn5BB58KFh4yk2bHsXsNhbAvof5VNgdtuCJlHltGl0-gtaqxeeRpR76GqkDsUJ_CqOl_NQ0U-YYBQCLQwNMhYdFcsvrKK8CkLqif7-BV4j1gRjOxNJ8drdN/l0i34j7qi8wioku/capital.csv'],
+       ['carteira_geografica_resumo.csv','https://download1591.mediafire.com/qvj50hfd3eogCdZ1D220kEm4ItVu2LzfHqwlV-BYLt2Hmpl1q0SPmJ8uvUcN5Xrek-tZHzyHoSAX0ACEwhL-SLNITbxib1xaF6ZYquNv4g5LY9D8eZCw9Ozx8Hr-AAsfkEhQIWEFQn412JrbinYKAfiJtB_mDIeQVqmcrKcaL_EZ/slnn8v1pe8lkxph/carteira_geografica_resumo.csv'],
+       ['carteira_pf_resumo.csv','https://download1085.mediafire.com/46au5u1puktg5DheKJQODs-9eKv-aDyUzLBA0OTfQagfmXie1op70r_vDIX_Jt75utOljpLZFM4wYnOFCk6nYZ_NaKRhUGeDx3qS29nMPpwZD0FD_RkA_Zijpf_MurMeVXwmrzfvg0V-9SlWoPgIewaqJJABI7sv6Qbsb9ZfShV0/skqoayiqwcgbo94/carteira_pf_resumo.csv'],
+       ['carteira_pj_resumo.csv','https://download1528.mediafire.com/v0yh2bd82oqgUox6X2jvR33aXJbnOSlVoE2zuNCVDEQPRNIaefOphR9mkZn5IIJl4D0-svrlZjh78fVTF1IUQK7M1iUQ6Nkmjl6vNEQTfhrQrMBihirDu7LWjHftUiPzBRPDwERcVrb6nFmJ6psIeQzxI3khqw3y1SWcC83BLYil/z8b8lxjbc00xxev/carteira_pj_resumo.csv'],
+       ['carteira_risco_resumo.csv','https://download1527.mediafire.com/urosy4ctj2wgtaolbo9RIy46OTYqFwgL2d2vK46oZFvhR_Tm_TDEpZB6DFB39MnW-aLegPbDPBrSrpm6ZxQinDH-KAhgrGaTbxR5g_qMB3IM6AfrVkiVmEEYSTNtNgYAIP4DDazfjMCr-pQnJOg4RzhXf-ZdzKW4EBu9X47ioCFA/skrkjzmgsptlou8/carteira_risco_resumo.csv'],
+       ['dre.csv','https://download1336.mediafire.com/rt7l1demkcdgp9YEGBsiQ-qcH8isghydrCuRJ_TfyDRs59-wZdOwL5StZj1J5y1BL1TBnwHVBX38bl0kZys94mtGDgUGiEsNSGyuc3wHOGz5WBmwxOpfLnyz12NR8a9lU4E9UhDgSaec9T_VFjPbQaXGe83_Itd7LIotJPRSVi0J/yatgbug7awxf8vu/dre.csv'],
+       ['eh_historico.csv','https://download1479.mediafire.com/fk0mxhmbqmngNUGVnPimZCcHIS2j2qqAe8ZaNuVJA3uI7Z3goCYOwtaMISn1NqkxDnIbMe_Xn9p2-L8KUrr7mYIS_LHmt0Y1OhOhgIVuUZBkCH0Mfj7yEr81KJwl20Hh2zd0gzHSPxLTATCtXMXZvJJ07D5UywPzfPg4PJNCfXKn/ugkkakqe1qv137z/eh_historico.csv'],
+       ['empresastrimestres.csv','https://download1503.mediafire.com/csbtbguq5owgOKo6mzDND5amZg8KaLQpcK0w-JObD7shrG5N1lLdlI2VZVdnFNCh8h8DGq5LyeYnybls1NgzEdoJr_7VAIiKCGGoa4nEFRc62MqB-mhNjyz1-0ohquNllOlhwKBWbS22ODowuAwa0PdiGzcyeHHTxVOFjo8uK9dl/v7bbzi3ctmg0h9d/empresastrimestres.csv'],
+       ['passivo.csv','https://download847.mediafire.com/0jrbo5kus18g064Ix5miVKk0mAQE2zN5aGc-Jd2u13m_GhlbUHZUJK7jr7ypX4gm1SAL9nXQvaiKApWiDZqIrO69gZ3mY-gdbenwUg4KuYKq4NDyJOGJYW3PuRwaCm0ZoRttEVeyX5GB84o2nAB2xbGcb4NaaR6SUUJi3hJnhc_E/h0fg5jiuwhptb4k/passivo.csv'],
+       ['perc_pf.csv','https://download1528.mediafire.com/grmyviv0yc1gJTDQHQq7l36_q5zRKCaM3rKYlxIiNZRoIkmZ6VzzgUvbrdu43YdmR16Yaxhb4LcTPrX8I_tKGHsNzC_xbNfAgJ55ejC7iXlGA4roN6uv6dLAr_aKLAmg5dyy67RGITFsfZ9xwoLGZ9LwQKUVrWekoLwgAL948RgP/kd9313xcexqdfzr/perc_pf.csv'],
+       ['resumo_consolidado.csv','https://download937.mediafire.com/dz0jdm3g9agguneIGMnygmW8PNpNucfnh6yXV13Y2WMnVM6Rhv2KnouuAjEoNebKzvxU06jLWdNh9m85EWgeWEKbj248dZGqUpVvm-nwpVV8zBd1BSiEQNQ4fkQAT39_C-Upidt7jcfIgCoBeNqa7gL8sNQYmbqFYIt_ySCCRDqQ/cudktcbeijw2lfe/resumo_consolidado.csv']]
 
 # HTML e CSS para centralizar a imagem na sidebar
 html = f"""
