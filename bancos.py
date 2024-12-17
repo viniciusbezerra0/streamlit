@@ -9,7 +9,7 @@ path = "C:/Users/vini/OneDrive - Heritage Capital Partners/Network/Analises/03_B
 #streamlit run "C:/Users/vini/OneDrive - Heritage Capital Partners/Network/Analises/03_Bancos/Dash/bancos.py"
 #streamlit run "C:\Users\samy\Heritage Capital Partners\Heritage Capital Partners - Network\Analises\03_Bancos\Dash\bancos.py"
 
-image_path = "https://download938.mediafire.com/joigbxggsp0gQYnJagJO9X4xzIwgycH-pipyDCccEckeryP63DBYmDEiyv7uBl9I97bOSCwlp26jF3eZC4R3EIP04pJjo-U4ag1dP3g4Mls_m8nUNL15wr6GlsqqgXH-AvflKehnV8eCuK0w6RhmM5Cy09IC_WUTlhLaELq94ifk/a8ygud00q3hu6j6/ativo.csv"
+image_path = "https://www.dropbox.com/scl/fi/3gra61tqh9pstrav9dyfs/logo.png?rlkey=3yayojmnxi56nm12mjzzv46lv&st=692dwho6&dl=1"
 
 links = [['ativo.csv','https://download938.mediafire.com/joigbxggsp0gQYnJagJO9X4xzIwgycH-pipyDCccEckeryP63DBYmDEiyv7uBl9I97bOSCwlp26jF3eZC4R3EIP04pJjo-U4ag1dP3g4Mls_m8nUNL15wr6GlsqqgXH-AvflKehnV8eCuK0w6RhmM5Cy09IC_WUTlhLaELq94ifk/a8ygud00q3hu6j6/ativo.csv'],
        ['capital.csv','https://download1322.mediafire.com/34he8d9pvkkgEuiBGi0rG1wiRy4GEdssrf_aBwBkDkmuZRMCEAJjvsn5BB58KFh4yk2bHsXsNhbAvof5VNgdtuCJlHltGl0-gtaqxeeRpR76GqkDsUJ_CqOl_NQ0U-YYBQCLQwNMhYdFcsvrKK8CkLqif7-BV4j1gRjOxNJ8drdN/l0i34j7qi8wioku/capital.csv'],
@@ -19,7 +19,7 @@ links = [['ativo.csv','https://download938.mediafire.com/joigbxggsp0gQYnJagJO9X4
        ['carteira_risco_resumo.csv','https://download1527.mediafire.com/urosy4ctj2wgtaolbo9RIy46OTYqFwgL2d2vK46oZFvhR_Tm_TDEpZB6DFB39MnW-aLegPbDPBrSrpm6ZxQinDH-KAhgrGaTbxR5g_qMB3IM6AfrVkiVmEEYSTNtNgYAIP4DDazfjMCr-pQnJOg4RzhXf-ZdzKW4EBu9X47ioCFA/skrkjzmgsptlou8/carteira_risco_resumo.csv'],
        ['dre.csv','https://download1336.mediafire.com/rt7l1demkcdgp9YEGBsiQ-qcH8isghydrCuRJ_TfyDRs59-wZdOwL5StZj1J5y1BL1TBnwHVBX38bl0kZys94mtGDgUGiEsNSGyuc3wHOGz5WBmwxOpfLnyz12NR8a9lU4E9UhDgSaec9T_VFjPbQaXGe83_Itd7LIotJPRSVi0J/yatgbug7awxf8vu/dre.csv'],
        ['eh_historico.csv','https://download1479.mediafire.com/fk0mxhmbqmngNUGVnPimZCcHIS2j2qqAe8ZaNuVJA3uI7Z3goCYOwtaMISn1NqkxDnIbMe_Xn9p2-L8KUrr7mYIS_LHmt0Y1OhOhgIVuUZBkCH0Mfj7yEr81KJwl20Hh2zd0gzHSPxLTATCtXMXZvJJ07D5UywPzfPg4PJNCfXKn/ugkkakqe1qv137z/eh_historico.csv'],
-       ['empresastrimestres.csv','https://download1503.mediafire.com/csbtbguq5owgOKo6mzDND5amZg8KaLQpcK0w-JObD7shrG5N1lLdlI2VZVdnFNCh8h8DGq5LyeYnybls1NgzEdoJr_7VAIiKCGGoa4nEFRc62MqB-mhNjyz1-0ohquNllOlhwKBWbS22ODowuAwa0PdiGzcyeHHTxVOFjo8uK9dl/v7bbzi3ctmg0h9d/empresastrimestres.csv'],
+       ['empresastrimestres.csv','https://drive.google.com/uc?export=download&id=18idu1IHVAmD5h2VM5GXvhWW7AEKEZ_yW'],
        ['passivo.csv','https://download847.mediafire.com/0jrbo5kus18g064Ix5miVKk0mAQE2zN5aGc-Jd2u13m_GhlbUHZUJK7jr7ypX4gm1SAL9nXQvaiKApWiDZqIrO69gZ3mY-gdbenwUg4KuYKq4NDyJOGJYW3PuRwaCm0ZoRttEVeyX5GB84o2nAB2xbGcb4NaaR6SUUJi3hJnhc_E/h0fg5jiuwhptb4k/passivo.csv'],
        ['perc_pf.csv','https://download1528.mediafire.com/grmyviv0yc1gJTDQHQq7l36_q5zRKCaM3rKYlxIiNZRoIkmZ6VzzgUvbrdu43YdmR16Yaxhb4LcTPrX8I_tKGHsNzC_xbNfAgJ55ejC7iXlGA4roN6uv6dLAr_aKLAmg5dyy67RGITFsfZ9xwoLGZ9LwQKUVrWekoLwgAL948RgP/kd9313xcexqdfzr/perc_pf.csv'],
        ['resumo_consolidado.csv','https://download937.mediafire.com/dz0jdm3g9agguneIGMnygmW8PNpNucfnh6yXV13Y2WMnVM6Rhv2KnouuAjEoNebKzvxU06jLWdNh9m85EWgeWEKbj248dZGqUpVvm-nwpVV8zBd1BSiEQNQ4fkQAT39_C-Upidt7jcfIgCoBeNqa7gL8sNQYmbqFYIt_ySCCRDqQ/cudktcbeijw2lfe/resumo_consolidado.csv']]
