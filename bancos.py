@@ -9,7 +9,7 @@ path = "C:/Users/vini/OneDrive - Heritage Capital Partners/Network/Analises/03_B
 #streamlit run "C:/Users/vini/OneDrive - Heritage Capital Partners/Network/Analises/03_Bancos/Dash/bancos.py"
 #streamlit run "C:\Users\samy\Heritage Capital Partners\Heritage Capital Partners - Network\Analises\03_Bancos\Dash\bancos.py"
 
-image_path = "https://drive.google.com/uc?export=download&id=1ApfkHQ6jRsNtWrVdt0CmS6cPKIV6BWtV"
+image_path = "https://drive.google.com/uc?export=view&id=1ApfkHQ6jRsNtWrVdt0CmS6cPKIV6BWtV"
 
 links0 = [['ativo.csv','https://drive.google.com/file/d/1R_y8vtNABZO35PeoyuvZouEZDYIuBJdm/view?usp=drive_link'],
        ['capital.csv','https://drive.google.com/file/d/12xnRhBcTi_0bryw1OcwSl9V19VWNlEQy/view?usp=drive_link'],
