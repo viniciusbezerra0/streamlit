@@ -24,7 +24,6 @@ links = [['ativo.csv','https://download938.mediafire.com/joigbxggsp0gQYnJagJO9X4
        ['perc_pf.csv','https://download1528.mediafire.com/grmyviv0yc1gJTDQHQq7l36_q5zRKCaM3rKYlxIiNZRoIkmZ6VzzgUvbrdu43YdmR16Yaxhb4LcTPrX8I_tKGHsNzC_xbNfAgJ55ejC7iXlGA4roN6uv6dLAr_aKLAmg5dyy67RGITFsfZ9xwoLGZ9LwQKUVrWekoLwgAL948RgP/kd9313xcexqdfzr/perc_pf.csv'],
        ['resumo_consolidado.csv','https://download937.mediafire.com/dz0jdm3g9agguneIGMnygmW8PNpNucfnh6yXV13Y2WMnVM6Rhv2KnouuAjEoNebKzvxU06jLWdNh9m85EWgeWEKbj248dZGqUpVvm-nwpVV8zBd1BSiEQNQ4fkQAT39_C-Upidt7jcfIgCoBeNqa7gL8sNQYmbqFYIt_ySCCRDqQ/cudktcbeijw2lfe/resumo_consolidado.csv']]
 
-# HTML e CSS para centralizar a imagem na sidebar
 html = f"""
     <style>
         .centered-image {{
@@ -111,8 +110,20 @@ if cat=="Principais indicadores":
             color='Empresa',  # Colorir as linhas por empresa
             title='Lucro Líquido',  # Título do gráfico
             labels={'AnoMes': 'Tri', 'Saldo': 'Lucro Líquido'}, barmode='group')
-
             st.plotly_chart(fig)
+
+            carteiracla = resumo_financeiro[resumo_financeiro["Empresa"].isin(filtro)]
+            carteiracla = carteiracla[carteiracla['NomeColuna'] == 'Carteira de Credito Classificada'].reset_index(drop=True)
+            fig = px.line(
+            carteiracla,
+            x='AnoMes',  # Eixo X
+            y='Saldo',  # Eixo Y
+            color='Empresa',  # Colorir as linhas por empresa
+            title='Carteira Classificada',  # Título do gráfico
+            labels={'AnoMes': 'Tri', 'Saldo': 'Carteira Classificada'})
+            fig.update_layout(xaxis_title="Ano e Mês", yaxis_title="Saldo")
+            st.plotly_chart(fig)
+
 
     with col2:
         filtro_unico=st.selectbox("", ["Selecione a empresa"] + empresas)
@@ -133,24 +144,23 @@ if cat=="Principais indicadores":
             fig.update_yaxes(tickformat=".1%")
             st.plotly_chart(fig)
 
-#aba carteira
+
 if cat=="Carteira":
     st.markdown("### Análise da carteira")
-    #st.columns(1,2)
-    
+
+    codfin = pd.read_excel(path + "codigos_financeiros.xlsx")
+    empresas = list(codfin["Empresa"].unique())
+
     col1, col2 = st.columns(2)
     with col1:
-        filtro=st.multiselect("Selecione as empresas",empresas)
+        filtro=st.multiselect("Selecione as empresas", empresas)
     with col2:
-        #filtro_unico=st.selectbox("", ["Selecione a empresa"] + empresas)
-        filtro_unico=st.selectbox("", empresas)
-    col1, col2 = st.columns(2)
-    with col2:
-        data=st.selectbox("Selecione a data", trimestres[::-1])
-    col1, col2 = st.columns(2)
+        filtro_unico=st.selectbox("", ["Selecione a empresa"] + empresas)
+        data=st.selectbox("Selecione a data", trimestres)
 
     if len(filtro) > 0 or filtro_unico != "Selecione a empresa":
 
+        #st.columns(1,2)
         anos = range(2009,2025)  # Adapte para o intervalo de anos que você deseja
         ordem_trimestres = [f'{i}T{str(ano)[-2:]}' for ano in anos for i in range(1, 5)]
 
@@ -160,6 +170,7 @@ if cat=="Carteira":
         eh_historico['AnoMes'] = pd.Categorical(eh_historico['AnoMes'], categories=ordem_trimestres, ordered=True)
         eh_historico['ordem'] = eh_historico['AnoMes'].apply(lambda x: int(x[2:]) * 10 + int(x[0]))
         eh_historico=eh_historico.sort_values(by='ordem')
+        empresas=eh_historico["Empresa"].unique()
 
         ordem_trimestres = [f'{i}T{str(year)[-2:]}' for year in range(2009, 2025) for i in range(1, 5)]
 
@@ -168,6 +179,7 @@ if cat=="Carteira":
         resumo_risco=pd.read_csv(next(link for nome, link in links if nome == 'carteira_risco_resumo.csv'))
         
         resumo_geografico=pd.read_csv(next(link for nome, link in links if nome == "carteira_geografica_resumo.csv"))
+
         
         carteira_pf=pd.read_csv(next(link for nome, link in links if nome == 'carteira_pf_resumo.csv'))
         carteira_pf['ordem'] = carteira_pf['AnoMes'].apply(lambda x: int(x[2:]) * 10 + int(x[0]))
@@ -179,8 +191,9 @@ if cat=="Carteira":
         carteira_pj=carteira_pj.sort_values(by='ordem')
 
         perc_pf=pd.read_csv(next(link for nome, link in links if nome == 'perc_pf.csv'))
+        
 
-
+        col1, col2 = st.columns(2)
         with col1:
             selecao_eh=eh_historico[eh_historico["Empresa"].isin(filtro)]
             fig = px.line(
@@ -217,6 +230,8 @@ if cat=="Carteira":
         )
             fig.update_yaxes(tickformat=".1%", title="Porcentagem")
             st.plotly_chart(fig)
+
+
         with col2:
             resumo_geografico_filtrado=resumo_geografico[resumo_geografico["Empresa"]==filtro_unico]
             resumo_geografico_filtrado=resumo_geografico_filtrado[resumo_geografico_filtrado["AnoMes"]==data]
@@ -248,6 +263,7 @@ if cat=="Carteira":
             # Configurando o layout do gráfico
             fig.update_layout(barmode="stack", xaxis_title="Ano e Mês", yaxis_title="Saldo")
             st.plotly_chart(fig)
+
 
 if cat=="Resumo":
     st.markdown("### Resumo")
