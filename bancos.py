@@ -1,28 +1,36 @@
 import streamlit as st
 import pandas as pd
+import re
 import plotly.express as px
+import plotly.graph_objects as go
 st.set_page_config(layout='wide', initial_sidebar_state='expanded')
 
-#path = "C:/Users/samy/Heritage Capital Partners/Heritage Capital Partners - Network/Analises/03_Bancos/Dash/bases/"
 path = "C:/Users/vini/OneDrive - Heritage Capital Partners/Network/Analises/03_Bancos/Dash/bases/"
 
-#streamlit run "C:/Users/vini/OneDrive - Heritage Capital Partners/Network/Analises/03_Bancos/Dash/bancos.py"
-#streamlit run "C:\Users\samy\Heritage Capital Partners\Heritage Capital Partners - Network\Analises\03_Bancos\Dash\bancos.py"
+#streamlit run "C:/Users/vini/OneDrive - Heritage Capital Partners/Network/Analises/03_Bancos/Dash/bancos-vinicius.py"
 
 image_path = "https://www.dropbox.com/scl/fi/3gra61tqh9pstrav9dyfs/logo.png?rlkey=3yayojmnxi56nm12mjzzv46lv&st=692dwho6&dl=1"
 
-links = [['ativo.csv','https://download938.mediafire.com/joigbxggsp0gQYnJagJO9X4xzIwgycH-pipyDCccEckeryP63DBYmDEiyv7uBl9I97bOSCwlp26jF3eZC4R3EIP04pJjo-U4ag1dP3g4Mls_m8nUNL15wr6GlsqqgXH-AvflKehnV8eCuK0w6RhmM5Cy09IC_WUTlhLaELq94ifk/a8ygud00q3hu6j6/ativo.csv'],
-       ['capital.csv','https://download1322.mediafire.com/34he8d9pvkkgEuiBGi0rG1wiRy4GEdssrf_aBwBkDkmuZRMCEAJjvsn5BB58KFh4yk2bHsXsNhbAvof5VNgdtuCJlHltGl0-gtaqxeeRpR76GqkDsUJ_CqOl_NQ0U-YYBQCLQwNMhYdFcsvrKK8CkLqif7-BV4j1gRjOxNJ8drdN/l0i34j7qi8wioku/capital.csv'],
-       ['carteira_geografica_resumo.csv','https://download1591.mediafire.com/qvj50hfd3eogCdZ1D220kEm4ItVu2LzfHqwlV-BYLt2Hmpl1q0SPmJ8uvUcN5Xrek-tZHzyHoSAX0ACEwhL-SLNITbxib1xaF6ZYquNv4g5LY9D8eZCw9Ozx8Hr-AAsfkEhQIWEFQn412JrbinYKAfiJtB_mDIeQVqmcrKcaL_EZ/slnn8v1pe8lkxph/carteira_geografica_resumo.csv'],
-       ['carteira_pf_resumo.csv','https://download1085.mediafire.com/46au5u1puktg5DheKJQODs-9eKv-aDyUzLBA0OTfQagfmXie1op70r_vDIX_Jt75utOljpLZFM4wYnOFCk6nYZ_NaKRhUGeDx3qS29nMPpwZD0FD_RkA_Zijpf_MurMeVXwmrzfvg0V-9SlWoPgIewaqJJABI7sv6Qbsb9ZfShV0/skqoayiqwcgbo94/carteira_pf_resumo.csv'],
-       ['carteira_pj_resumo.csv','https://download1528.mediafire.com/v0yh2bd82oqgUox6X2jvR33aXJbnOSlVoE2zuNCVDEQPRNIaefOphR9mkZn5IIJl4D0-svrlZjh78fVTF1IUQK7M1iUQ6Nkmjl6vNEQTfhrQrMBihirDu7LWjHftUiPzBRPDwERcVrb6nFmJ6psIeQzxI3khqw3y1SWcC83BLYil/z8b8lxjbc00xxev/carteira_pj_resumo.csv'],
-       ['carteira_risco_resumo.csv','https://download1527.mediafire.com/urosy4ctj2wgtaolbo9RIy46OTYqFwgL2d2vK46oZFvhR_Tm_TDEpZB6DFB39MnW-aLegPbDPBrSrpm6ZxQinDH-KAhgrGaTbxR5g_qMB3IM6AfrVkiVmEEYSTNtNgYAIP4DDazfjMCr-pQnJOg4RzhXf-ZdzKW4EBu9X47ioCFA/skrkjzmgsptlou8/carteira_risco_resumo.csv'],
-       ['dre.csv','https://download1336.mediafire.com/rt7l1demkcdgp9YEGBsiQ-qcH8isghydrCuRJ_TfyDRs59-wZdOwL5StZj1J5y1BL1TBnwHVBX38bl0kZys94mtGDgUGiEsNSGyuc3wHOGz5WBmwxOpfLnyz12NR8a9lU4E9UhDgSaec9T_VFjPbQaXGe83_Itd7LIotJPRSVi0J/yatgbug7awxf8vu/dre.csv'],
-       ['eh_historico.csv','https://download1479.mediafire.com/fk0mxhmbqmngNUGVnPimZCcHIS2j2qqAe8ZaNuVJA3uI7Z3goCYOwtaMISn1NqkxDnIbMe_Xn9p2-L8KUrr7mYIS_LHmt0Y1OhOhgIVuUZBkCH0Mfj7yEr81KJwl20Hh2zd0gzHSPxLTATCtXMXZvJJ07D5UywPzfPg4PJNCfXKn/ugkkakqe1qv137z/eh_historico.csv'],
-       ['empresastrimestres.csv','https://drive.google.com/uc?export=download&id=18idu1IHVAmD5h2VM5GXvhWW7AEKEZ_yW'],
-       ['passivo.csv','https://download847.mediafire.com/0jrbo5kus18g064Ix5miVKk0mAQE2zN5aGc-Jd2u13m_GhlbUHZUJK7jr7ypX4gm1SAL9nXQvaiKApWiDZqIrO69gZ3mY-gdbenwUg4KuYKq4NDyJOGJYW3PuRwaCm0ZoRttEVeyX5GB84o2nAB2xbGcb4NaaR6SUUJi3hJnhc_E/h0fg5jiuwhptb4k/passivo.csv'],
-       ['perc_pf.csv','https://download1528.mediafire.com/grmyviv0yc1gJTDQHQq7l36_q5zRKCaM3rKYlxIiNZRoIkmZ6VzzgUvbrdu43YdmR16Yaxhb4LcTPrX8I_tKGHsNzC_xbNfAgJ55ejC7iXlGA4roN6uv6dLAr_aKLAmg5dyy67RGITFsfZ9xwoLGZ9LwQKUVrWekoLwgAL948RgP/kd9313xcexqdfzr/perc_pf.csv'],
-       ['resumo_consolidado.csv','https://download937.mediafire.com/dz0jdm3g9agguneIGMnygmW8PNpNucfnh6yXV13Y2WMnVM6Rhv2KnouuAjEoNebKzvxU06jLWdNh9m85EWgeWEKbj248dZGqUpVvm-nwpVV8zBd1BSiEQNQ4fkQAT39_C-Upidt7jcfIgCoBeNqa7gL8sNQYmbqFYIt_ySCCRDqQ/cudktcbeijw2lfe/resumo_consolidado.csv']]
+links0 = [['ativo.csv','https://drive.google.com/file/d/1pasfIKhQB9s7grPZLbRyynFRkN6AgQ76/view?usp=drive_link'],
+       ['capital.csv','https://drive.google.com/file/d/13OJ7Q-GNhsjd41uUqki9mMhshva-FS4t/view?usp=drive_link'],
+       ['carteira_geografica_resumo.csv', 'https://drive.google.com/file/d/13OJ7Q-GNhsjd41uUqki9mMhshva-FS4t/view?usp=drive_link'],
+       ['carteira_pf_resumo.csv', 'https://drive.google.com/file/d/13d0HaciSmsnhavAfGqdFwJLInwnwbI-o/view?usp=drive_link'],
+       ['carteira_pj_resumo.csv', 'https://drive.google.com/file/d/1OcAiiqBPkUcnwHXPbrHZlJcQc63vxIjN/view?usp=drive_link'],
+       ['carteira_risco_resumo.csv', 'https://drive.google.com/file/d/1FdZtFvhIiFcNLThWdw9--gROxc2-eWAc/view?usp=drive_link'],
+       ['carteirapfpj.csv', 'https://drive.google.com/file/d/1L0u8GhHdaKr7-l4bAV-g3nJ-g_AjKiQ-/view?usp=drive_link'],
+       ['dre.csv', 'https://drive.google.com/file/d/1cjivizrLkw8v4AHPyHoMfFuG-WLI65nb/view?usp=drive_link'],
+       ['eh_historico.csv', 'https://drive.google.com/file/d/1x4DxSNDDb-4NjckPGDZ4ZJ5IyEBxRHPt/view?usp=drive_link'],
+       ['empresastrimestres.csv', 'https://drive.google.com/file/d/16E18UoQVFXx1jVwc1g9flosORJ4mSfAK/view?usp=drive_link'],
+       ['passivo.csv', 'https://drive.google.com/file/d/1ffbdj-yuTrzG_AFBcGCF-VEFo_uWhDAI/view?usp=drive_link'],
+       ['perc_pf.csv', 'https://drive.google.com/file/d/1Knu9ZlKMefRAxqRVLHPw8oJloNk3LAmS/view?usp=drive_link'],
+       ['resumo_consolidado.csv', 'https://drive.google.com/file/d/1l_g9Y-8dMIqiVaUNUvbgcF2m-VsVHJcE/view?usp=drive_link']]
+
+links = []
+#for i in range(len(links0)):
+    #links.append([links0[i][0], path + links0[i][0]])
+for i in range(len(links0)):
+    links.append([links0[i][0], f'https://drive.google.com/uc?id={re.search(r'd/([^/]+)', links0[i][1]).group(1)}'])
+
 
 html = f"""
     <style>
@@ -42,7 +50,7 @@ html = f"""
 st.sidebar.markdown(html, unsafe_allow_html=True)
 
 
-cat=st.sidebar.selectbox("",["Escolha a categoria", "Principais indicadores","Carteira","Resumo", "Demonstrativos"])
+cat=st.sidebar.selectbox("",["Escolha a categoria", "Principais indicadores","Carteira","Resumo", "Demonstrativos", "Passivo"])
 
 if cat != "Escolha a categoria":
     emptri = pd.read_csv(next(link for nome, link in links if nome == 'empresastrimestres.csv'))
@@ -63,8 +71,8 @@ if cat=="Principais indicadores":
                 capital_resumo = pd.read_csv(next(link for nome, link in links if nome == 'capital.csv'))
                 resumo_financeiro = pd.read_csv(next(link for nome, link in links if nome == 'resumo_consolidado.csv'))
                 resumo_financeiro_invertido = resumo_financeiro.iloc[::-1]
-            capital_resumo_filtrado= capital_resumo[capital_resumo["Empresa"].isin(filtro)]
-            capital_resumo_filtrado= capital_resumo_filtrado[capital_resumo_filtrado["Nome"]=="CET1"]
+            capital_resumo_filtrado = capital_resumo[capital_resumo["Empresa"].isin(filtro)]
+            capital_resumo_filtrado = capital_resumo_filtrado[capital_resumo_filtrado["Nome"]=="CET1"]
             fig = px.line(
             capital_resumo_filtrado,
             x='AnoMes',  # Eixo X
@@ -100,7 +108,7 @@ if cat=="Principais indicadores":
             labels={'AnoMes': 'Ano e Mês', 'Saldo': 'ROAE'}, barmode='group')
             fig.update_yaxes(tickformat=".1%", title="Porcentagem")
             st.plotly_chart(fig)
-            resumo_financeiro_filtrado=resumo_financeiro_invertido[resumo_financeiro_invertido["Empresa"].isin(filtro)]
+            resumo_financeiro_filtrado= resumo_financeiro_invertido[resumo_financeiro_invertido["Empresa"].isin(filtro)]
             resumo_financeiro_filtrado= resumo_financeiro_filtrado[resumo_financeiro_filtrado["NomeColuna"]=="Lucro liquido trimestral"]
 
             fig = px.bar(
@@ -130,6 +138,7 @@ if cat=="Principais indicadores":
         if filtro_unico != "Selecione a empresa":
             if len(capital_resumo) < 1:
                 capital_resumo = pd.read_csv(next(link for nome, link in links if nome == 'capital.csv'))
+                resumo_financeiro = pd.read_csv(next(link for nome, link in links if nome == 'resumo_consolidado.csv'))
             capital_resumo_filtrado= capital_resumo[capital_resumo["Empresa"]==filtro_unico]
             fig = px.bar(
             capital_resumo_filtrado[capital_resumo_filtrado["Nome"].isin(['CET1', 'AT1', 'tier_2'])],
@@ -144,6 +153,59 @@ if cat=="Principais indicadores":
             fig.update_yaxes(tickformat=".1%")
             st.plotly_chart(fig)
 
+            rwa = resumo_financeiro[resumo_financeiro["Empresa"]==filtro_unico].reset_index(drop=True)
+            indice = [1] * len(trimestres)
+            for i in range(len(rwa)):
+                if rwa['NomeColuna'][i] == 'Patrimonio de Referencia para Comparacao com o RWA':
+                    indice[trimestres.index(rwa['AnoMes'][i])] *= rwa['Saldo'][i]
+                elif rwa['NomeColuna'][i] == 'Indice de Basileia':
+                    indice[trimestres.index(rwa['AnoMes'][i])] /= rwa['Saldo'][i]
+                    
+            for i in range(len(indice)):
+                if indice[i] > 1:
+                    x = rwa.iloc[0].copy()
+                    x['NomeColuna'] = 'Ativos Ponderados pelo Risco (RWA)'
+                    x['AnoMes'] = trimestres[i]
+                    x['Saldo'] = indice[i]
+                    rwa.loc[len(rwa)] = x
+
+            cols = ['Patrimonio de Referencia para Comparacao com o RWA', 'Ativos Ponderados pelo Risco (RWA)']
+            rwa_2 = rwa[rwa["NomeColuna"].isin(cols)]
+            fig = px.line(
+            rwa_2,
+            x='AnoMes',  # Eixo X
+            y='Saldo',  # Eixo Y
+            color='NomeColuna',  # Colorir as linhas por empresa
+            title='Basileia',  # Título do gráfico
+            labels={'AnoMes': 'Ano e Mês', 'Saldo': 'Saldo'}
+            )
+            
+
+            basi = rwa[rwa["NomeColuna"] == 'Indice de Basileia']
+            fig.add_trace(
+                go.Scatter(
+                    x=basi['AnoMes'],  # Eixo X
+                    y=basi['Saldo'],  # Eixo Y secundário
+                    mode='lines',
+                    name='Indice de Basileia',  # Nome da linha
+                    yaxis='y2'  # Definir este trace para usar o eixo Y secundário
+                )
+            )
+
+            # Configurar o eixo Y secundário
+            fig.update_layout(
+                yaxis2=dict(
+                    title='Indice de Basileia',  # Título do eixo Y secundário
+                    overlaying='y',  # Este eixo sobrepõe o eixo Y principal
+                    side='right',  # Colocar o eixo à direita
+                    tickformat=".2f"  # Formato de exibição para o eixo Y secundário
+                )
+            )
+
+            # Exibir o gráfico
+            st.plotly_chart(fig)
+
+
 
 if cat=="Carteira":
     st.markdown("### Análise da carteira")
@@ -156,7 +218,7 @@ if cat=="Carteira":
         filtro=st.multiselect("Selecione as empresas", empresas)
     with col2:
         filtro_unico=st.selectbox("", ["Selecione a empresa"] + empresas)
-        data=st.selectbox("Selecione a data", trimestres)
+        data=st.selectbox("Selecione a data", trimestres[::-1])
 
     if len(filtro) > 0 or filtro_unico != "Selecione a empresa":
 
@@ -189,9 +251,12 @@ if cat=="Carteira":
         carteira_pj=pd.read_csv(next(link for nome, link in links if nome == 'carteira_pj_resumo.csv'))
         carteira_pj['ordem'] = carteira_pj['AnoMes'].apply(lambda x: int(x[2:]) * 10 + int(x[0]))
         carteira_pj=carteira_pj.sort_values(by='ordem')
+        carteira_pj=carteira_pj.drop_duplicates(subset=['Grupo', 'Empresa', 'AnoMes'])
 
         perc_pf=pd.read_csv(next(link for nome, link in links if nome == 'perc_pf.csv'))
         
+        carteirapfpj = pd.read_csv(next(link for nome, link in links if nome == 'carteirapfpj.csv'))
+
 
         col1, col2 = st.columns(2)
         with col1:
@@ -213,6 +278,7 @@ if cat=="Carteira":
             resumo_risco_filtrado = resumo_risco_filtrado.drop_duplicates(subset=['NomeColuna', 'Empresa', 'AnoMes'])
             resumo_risco_filtrado=resumo_risco_filtrado[resumo_risco_filtrado["AnoMes"]==data]
             fig = px.pie(resumo_risco_filtrado, values="Saldo_Percentual", names="NomeColuna", title="Distribuição do risco")
+            fig.update_layout(xaxis={'categoryorder': 'array', 'categoryarray': resumo_risco_filtrado['AnoMes'].tolist()})
             st.plotly_chart(fig)
             # Exibindo o gráfico no Streamlit
 
@@ -229,6 +295,7 @@ if cat=="Carteira":
             labels={'AnoMes': 'Ano e Mês', 'Saldo_Percentual': '% PF'}
         )
             fig.update_yaxes(tickformat=".1%", title="Porcentagem")
+            fig.update_layout(xaxis={'categoryorder': 'array', 'categoryarray': selecao_perc['AnoMes'].tolist()})
             st.plotly_chart(fig)
 
 
@@ -236,7 +303,10 @@ if cat=="Carteira":
             resumo_geografico_filtrado=resumo_geografico[resumo_geografico["Empresa"]==filtro_unico]
             resumo_geografico_filtrado=resumo_geografico_filtrado[resumo_geografico_filtrado["AnoMes"]==data]
             fig = px.pie(resumo_geografico_filtrado, values="Saldo_Percentual", names="NomeColuna", title="Distribuição Geográfica")
+            fig.update_layout(xaxis={'categoryorder': 'array', 'categoryarray': resumo_geografico_filtrado['AnoMes'].tolist()})
             st.plotly_chart(fig)
+
+
             carteira_pf_filtrada=carteira_pf[carteira_pf["Empresa"]==filtro_unico]
             fig = px.bar(
             carteira_pf_filtrada,
@@ -245,13 +315,34 @@ if cat=="Carteira":
             color="Grupo",       # Categorias empilhadas
             title="Saldo carteira PF por tipo",
             labels={"AnoMes": "Ano e Mês", "Saldo": "Saldo (em R$)", "grupo": "Grupo"})
-
-            # Configurando o layout do gráfico
             fig.update_layout(barmode="stack", xaxis_title="Ano e Mês", yaxis_title="Saldo")
+            fig.update_layout(xaxis={'categoryorder': 'array', 'categoryarray': carteira_pf_filtrada['AnoMes'].tolist()})
             st.plotly_chart(fig)
 
-            carteira_pj_filtrada=carteira_pj[carteira_pj["Empresa"]==filtro_unico]
 
+
+            pf = carteira_pf_filtrada.reset_index(drop=True)
+            listtri = list(pf['AnoMes'].unique())
+            soma = [0] * len(listtri)
+            for i in range(len(pf)):
+                if abs(pf['Saldo'].iloc[i]) > 0:
+                    soma[listtri.index(pf['AnoMes'].iloc[i])] += pf['Saldo'].iloc[i]
+            for i in range(len(pf)):
+                pf.loc[i, 'Saldo'] /= soma[listtri.index(pf.loc[i, 'AnoMes'])]
+
+            fig = px.bar(
+            pf,
+            x="AnoMes",         # Eixo horizontal
+            y="Saldo",          # Eixo vertical
+            color="Grupo",       # Categorias empilhadas
+            title="Distribução carteira PF por tipo",
+            labels={"AnoMes": "Ano e Mês", "Saldo": "Saldo (em R$)", "grupo": "Grupo"})
+            fig.update_layout(barmode="stack", xaxis_title="Ano e Mês", yaxis_title="Saldo")
+            fig.update_layout(xaxis={'categoryorder': 'array', 'categoryarray': pf['AnoMes'].tolist()})
+            st.plotly_chart(fig)
+
+
+            carteira_pj_filtrada=carteira_pj[carteira_pj["Empresa"]==filtro_unico]
             fig = px.bar(
             carteira_pj_filtrada,
             x="AnoMes",         # Eixo horizontal
@@ -259,9 +350,64 @@ if cat=="Carteira":
             color="Grupo",       # Categorias empilhadas
             title="Saldo carteira Pj por tipo",
             labels={"AnoMes": "Ano e Mês", "Saldo": "Saldo (em R$)", "grupo": "Grupo"})
-
-            # Configurando o layout do gráfico
             fig.update_layout(barmode="stack", xaxis_title="Ano e Mês", yaxis_title="Saldo")
+            fig.update_layout(xaxis={'categoryorder': 'array', 'categoryarray': carteira_pj_filtrada['AnoMes'].tolist()})
+            st.plotly_chart(fig)
+
+
+            pj = carteira_pj_filtrada.reset_index(drop=True)
+            listtri = list(pj['AnoMes'].unique())
+            soma = [0] * len(listtri)
+            for i in range(len(pj)):
+                if abs(pj['Saldo'].iloc[i]) > 0:
+                    soma[listtri.index(pj['AnoMes'].iloc[i])] += pj['Saldo'].iloc[i]
+            for i in range(len(pj)):
+                pj.loc[i, 'Saldo'] /= soma[listtri.index(pj.loc[i, 'AnoMes'])]
+
+            fig = px.bar(
+            pj,
+            x="AnoMes",         # Eixo horizontal
+            y="Saldo",          # Eixo vertical
+            color="Grupo",       # Categorias empilhadas
+            title="Distribuição carteira Pj por tipo",
+            labels={"AnoMes": "Ano e Mês", "Saldo": "Saldo (em R$)", "grupo": "Grupo"})
+            fig.update_layout(barmode="stack", xaxis_title="Ano e Mês", yaxis_title="Saldo")
+            fig.update_layout(xaxis={'categoryorder': 'array', 'categoryarray': pj['AnoMes'].tolist()})
+            st.plotly_chart(fig)
+
+
+            carteirapfpj = carteirapfpj[carteirapfpj["Empresa"]==filtro_unico]
+            fig = px.bar(
+            carteirapfpj,
+            x="AnoMes",         # Eixo horizontal
+            y="Saldo",          # Eixo vertical
+            color="NomeColuna",       # Categorias empilhadas
+            title="Saldo carteira PF e PJ por duração",
+            labels={"AnoMes": "Ano e Mês", "Saldo": "Saldo (em R$)", "grupo": "Duração"})
+            fig.update_layout(barmode="stack", xaxis_title="Ano e Mês", yaxis_title="Saldo")
+            fig.update_layout(xaxis={'categoryorder': 'array', 'categoryarray': carteirapfpj['AnoMes'].tolist()})
+            st.plotly_chart(fig)
+
+
+
+            pfpj = carteirapfpj.reset_index(drop=True)
+            listtri = list(pfpj['AnoMes'].unique())
+            soma = [0] * len(listtri)
+            for i in range(len(pfpj)):
+                if abs(pfpj['Saldo'].iloc[i]) > 0:
+                    soma[listtri.index(pfpj['AnoMes'].iloc[i])] += pfpj['Saldo'].iloc[i]
+            for i in range(len(pfpj)):
+                pfpj.loc[i, 'Saldo'] /= soma[listtri.index(pfpj.loc[i, 'AnoMes'])]
+
+            fig = px.bar(
+            pfpj,
+            x="AnoMes",         # Eixo horizontal
+            y="Saldo",          # Eixo vertical
+            color="NomeColuna",       # Categorias empilhadas
+            title="Distribução carteira PF e PJ por duração",
+            labels={"AnoMes": "Ano e Mês", "Saldo": "Saldo (em R$)", "grupo": "Duração"})
+            fig.update_layout(barmode="stack", xaxis_title="Ano e Mês", yaxis_title="Saldo")
+            fig.update_layout(xaxis={'categoryorder': 'array', 'categoryarray': pfpj['AnoMes'].tolist()})
             st.plotly_chart(fig)
 
 
@@ -637,7 +783,7 @@ if cat=="Demonstrativos":
             for i in range(len(res)):
                 if int(res['AnoMes'][i][0])%2 == 0:
                     restri = res[res['AnoMes'] == str(int(res['AnoMes'][i][0]) - 1) + res['AnoMes'][i][1:]]
-                    res.loc[i,'Saldo'] = res['Saldo'][i] - restri[restri['NomeColuna'] == res['NomeColuna'][i]]['Saldo'].iloc[0]
+                    res.loc[i,'Saldo'] = res['Saldo'].iloc[i]- restri[restri['NomeColuna'] == res['NomeColuna'][i]]['Saldo'].iloc[0]
             
             for i in dre['NomeColuna'].unique():
                 ordem.append( i[i.index("(")+1:i.index(")")] )
@@ -674,7 +820,138 @@ if cat=="Demonstrativos":
             with col4:
                 st.download_button(
                     label="Baixar demonstrativo",
-                    data=bpdown,
+                    data=resdown,
                     file_name="dre " + empresa + " " + tris[0] + "-" + tris[-1] + ".csv",
                     mime="text/csv"
                 )
+
+
+if cat=="Passivo":
+    st.markdown("### Passivo")
+
+    col1, col2 = st.columns(2)
+    with col1:
+        empresas0=st.multiselect("Selecione as empresas", empresas)
+    with col2:
+        empresa=st.selectbox("", ["Selecione a empresa"] + empresas)
+        data=st.selectbox("Selecione a data", trimestres[::-1])
+
+    if len(empresas) > 0 or empresa != "Selecione a empresa":
+
+        passivo = pd.read_csv(next(link for nome, link in links if nome == 'passivo.csv'))
+
+        for i in passivo['NomeColuna'].unique():
+            if 'aptac' in i:
+                col = i
+                break
+
+        passivocap = passivo[passivo["Empresa"].isin(empresas0)]
+        passivocap = passivocap[passivocap['NomeColuna'] == col]
+
+        col1, col2 = st.columns(2)
+        with col1:
+
+            fig = px.line(
+            passivocap,
+            x='AnoMes',  # Eixo X
+            y='Saldo',  # Eixo Y
+            color='Empresa',  # Colorir as linhas por empresa
+            title='Captações totais',  # Título do gráfico
+            labels={'AnoMes': 'Ano e Mês', 'Saldo': '%'})
+
+            fig.update_layout(xaxis={'categoryorder': 'array', 'categoryarray': passivocap['AnoMes'].tolist()})
+            st.plotly_chart(fig)
+
+
+
+        for i in passivo['NomeColuna'].unique():
+            if 'eposito Total' in i:
+                col01 = i
+                break
+        for i in passivo['NomeColuna'].unique():
+            if 'peracoes Compromissada' in i:
+                col02 = i
+                break
+        for i in passivo['NomeColuna'].unique():
+            if i[1:7] == 'ecurso':
+                col03 = i
+                break
+        for i in passivo['NomeColuna'].unique():
+            if 'oes por Emprestimos e Repasse' in i:
+                col04 = i
+                break
+        cols = [col01,col02,col03,col04]
+
+        passivoemp = passivo[passivo['Empresa'] == empresa] 
+
+        with col2:
+
+            passivoabcd = passivoemp[passivoemp["NomeColuna"].isin(cols)].reset_index(drop=True)
+
+            fig = px.bar(
+            passivoabcd,
+            x="AnoMes", 
+            y="Saldo",     
+            color="NomeColuna",  
+            title="Tipos de captações",
+            labels={"AnoMes": "Ano e Mês", "Saldo": "Saldo (em R$)", "NomeColuna": "Grupo"})
+            fig.update_layout(barmode="stack", xaxis_title="Ano e Mês", yaxis_title="Saldo")
+            fig.update_layout(xaxis={'categoryorder': 'array', 'categoryarray': passivoabcd['AnoMes'].tolist()})
+            st.plotly_chart(fig)
+
+
+            
+            listtri = list(passivoabcd['AnoMes'].unique())
+            soma = [0] * len(listtri)
+            for i in range(len(passivoabcd)):
+                if abs(passivoabcd['Saldo'].iloc[i]) > 0:
+                    soma[listtri.index(passivoabcd['AnoMes'].iloc[i])] += passivoabcd['Saldo'].iloc[i]
+            for i in range(len(passivoabcd)):
+                passivoabcd.loc[i, 'Saldo'] /= soma[listtri.index(passivoabcd.loc[i, 'AnoMes'])]
+            
+            fig = px.bar(
+            passivoabcd,
+            x="AnoMes", 
+            y="Saldo",     
+            color="NomeColuna",  
+            title="Distribuição das captações",
+            labels={"AnoMes": "Ano e Mês", "Saldo": "Saldo (em R$)", "NomeColuna": "Grupo"})
+            fig.update_layout(barmode="stack", xaxis_title="Ano e Mês", yaxis_title="Saldo")
+            fig.update_layout(xaxis={'categoryorder': 'array', 'categoryarray': passivoabcd['AnoMes'].tolist()})
+            st.plotly_chart(fig)
+
+
+
+            cols = ['Depositos a Vista  (a1)', 'Depositos de Poupanca  (a2)', 'Depositos Interfinanceiros  (a3)', 'Depositos a Prazo  (a4)', 'Outros Depositos  (a5)', 'Depositos Outros  (a6)', 'Obrigacoes por Operacoes Compromissadas  (b)', 'Letras de Credito Imobiliario  (c1)', 'Letras de Credito do Agronegocio  (c2)', 'Letras Financeiras  (c3)', 'Obrigacoes por Titulos e Valores Mobiliarios no Exterior  (c4)', 'Outros Recursos de Aceites e Emissao de Titulos  (c5)', 'Obrigacoes por Emprestimos e Repasses  (d)']
+            passivoacd = passivoemp[passivoemp["NomeColuna"].isin(cols)].reset_index(drop=True)
+
+            fig = px.bar(
+            passivoacd,
+            x="AnoMes", 
+            y="Saldo",     
+            color="NomeColuna",  
+            title="Tipos de passivos",
+            labels={"AnoMes": "Ano e Mês", "Saldo": "Saldo (em R$)", "NomeColuna": "Grupo"})
+            fig.update_layout(barmode="stack", xaxis_title="Ano e Mês", yaxis_title="Saldo")
+            fig.update_layout(xaxis={'categoryorder': 'array', 'categoryarray': passivoacd['AnoMes'].tolist()})
+            st.plotly_chart(fig)
+
+
+            listtri = list(passivoacd['AnoMes'].unique())
+            soma = [0] * len(listtri)
+            for i in range(len(passivoacd)):
+                if abs(passivoacd['Saldo'].iloc[i]) > 0:
+                    soma[listtri.index(passivoacd['AnoMes'].iloc[i])] += passivoacd['Saldo'].iloc[i]
+            for i in range(len(passivoacd)):
+                passivoacd.loc[i, 'Saldo'] /= soma[listtri.index(passivoacd.loc[i, 'AnoMes'])]
+            
+            fig = px.bar(
+            passivoacd,
+            x="AnoMes", 
+            y="Saldo",     
+            color="NomeColuna",  
+            title="Distribuição dos passivos",
+            labels={"AnoMes": "Ano e Mês", "Saldo": "Saldo (em R$)", "NomeColuna": "Grupo"})
+            fig.update_layout(barmode="stack", xaxis_title="Ano e Mês", yaxis_title="Saldo")
+            fig.update_layout(xaxis={'categoryorder': 'array', 'categoryarray': passivoacd['AnoMes'].tolist()})
+            st.plotly_chart(fig)
