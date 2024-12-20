@@ -13,7 +13,7 @@ image_path = "https://www.dropbox.com/scl/fi/3gra61tqh9pstrav9dyfs/logo.png?rlke
 
 links0 = [['ativo.csv','https://drive.google.com/file/d/1pasfIKhQB9s7grPZLbRyynFRkN6AgQ76/view?usp=drive_link'],
        ['capital.csv','https://drive.google.com/file/d/13OJ7Q-GNhsjd41uUqki9mMhshva-FS4t/view?usp=drive_link'],
-       ['carteira_geografica_resumo.csv', 'https://drive.google.com/file/d/13OJ7Q-GNhsjd41uUqki9mMhshva-FS4t/view?usp=drive_link'],
+       ['carteira_geografica_resumo.csv', 'https://drive.google.com/file/d/1C-F3Tzgi1wc2j-7n3uzGcigbD_y9Jimk/view?usp=drive_link'],
        ['carteira_pf_resumo.csv', 'https://drive.google.com/file/d/13d0HaciSmsnhavAfGqdFwJLInwnwbI-o/view?usp=drive_link'],
        ['carteira_pj_resumo.csv', 'https://drive.google.com/file/d/1OcAiiqBPkUcnwHXPbrHZlJcQc63vxIjN/view?usp=drive_link'],
        ['carteira_risco_resumo.csv', 'https://drive.google.com/file/d/1FdZtFvhIiFcNLThWdw9--gROxc2-eWAc/view?usp=drive_link'],
@@ -210,8 +210,8 @@ if cat=="Principais indicadores":
 if cat=="Carteira":
     st.markdown("### Análise da carteira")
 
-    codfin = pd.read_excel(path + "codigos_financeiros.xlsx")
-    empresas = list(codfin["Empresa"].unique())
+    perc_pf=pd.read_csv(next(link for nome, link in links if nome == 'perc_pf.csv'))
+    empresas = list(perc_pf["Empresa"].unique())
 
     col1, col2 = st.columns(2)
     with col1:
@@ -252,8 +252,6 @@ if cat=="Carteira":
         carteira_pj['ordem'] = carteira_pj['AnoMes'].apply(lambda x: int(x[2:]) * 10 + int(x[0]))
         carteira_pj=carteira_pj.sort_values(by='ordem')
         carteira_pj=carteira_pj.drop_duplicates(subset=['Grupo', 'Empresa', 'AnoMes'])
-
-        perc_pf=pd.read_csv(next(link for nome, link in links if nome == 'perc_pf.csv'))
         
         carteirapfpj = pd.read_csv(next(link for nome, link in links if nome == 'carteirapfpj.csv'))
 
@@ -645,7 +643,7 @@ if cat=="Demonstrativos":
         tris = trimestres[start_idx:end_idx + 1]
 
     def csv(df):
-        return df.to_csv(index=False).encode('utf-8')
+        return df.to_csv().encode('utf-8')
     
 
     if empresa != "Selecione a empresa" and len(tris) > 2:
