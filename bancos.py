@@ -18,6 +18,7 @@ links0 = [['ativo.csv','https://drive.google.com/file/d/1pasfIKhQB9s7grPZLbRyynF
        ['carteira_pj_resumo.csv', 'https://drive.google.com/file/d/1OcAiiqBPkUcnwHXPbrHZlJcQc63vxIjN/view?usp=drive_link'],
        ['carteira_risco_resumo.csv', 'https://drive.google.com/file/d/1FdZtFvhIiFcNLThWdw9--gROxc2-eWAc/view?usp=drive_link'],
        ['carteirapfpj.csv', 'https://drive.google.com/file/d/1L0u8GhHdaKr7-l4bAV-g3nJ-g_AjKiQ-/view?usp=drive_link'],
+       ['carteira_tam_pj.csv', 'https://drive.google.com/file/d/1AJNe4odC_F_-gmm4nQFPzlOLajwbgdPL/view?usp=drive_link'],
        ['dre.csv', 'https://drive.google.com/file/d/1cjivizrLkw8v4AHPyHoMfFuG-WLI65nb/view?usp=drive_link'],
        ['eh_historico.csv', 'https://drive.google.com/file/d/1x4DxSNDDb-4NjckPGDZ4ZJ5IyEBxRHPt/view?usp=drive_link'],
        ['empresastrimestres.csv', 'https://drive.google.com/file/d/16E18UoQVFXx1jVwc1g9flosORJ4mSfAK/view?usp=drive_link'],
@@ -255,6 +256,8 @@ if cat=="Carteira":
         
         carteirapfpj = pd.read_csv(next(link for nome, link in links if nome == 'carteirapfpj.csv'))
 
+        carteira_tam_pj = pd.read_csv(next(link for nome, link in links if nome == 'carteira_tam_pj.csv'))
+
 
         col1, col2 = st.columns(2)
         with col1:
@@ -331,7 +334,7 @@ if cat=="Carteira":
             fig = px.bar(
             pf,
             x="AnoMes",         # Eixo horizontal
-            y="Saldo",          # Eixo vertical
+            y="Porcentagem",          # Eixo vertical
             color="Grupo",       # Categorias empilhadas
             title="Distribução carteira PF por tipo",
             labels={"AnoMes": "Ano e Mês", "Saldo": "Saldo (em R$)", "grupo": "Grupo"})
@@ -365,7 +368,7 @@ if cat=="Carteira":
             fig = px.bar(
             pj,
             x="AnoMes",         # Eixo horizontal
-            y="Saldo",          # Eixo vertical
+            y="Porcentagem",          # Eixo vertical
             color="Grupo",       # Categorias empilhadas
             title="Distribuição carteira Pj por tipo",
             labels={"AnoMes": "Ano e Mês", "Saldo": "Saldo (em R$)", "grupo": "Grupo"})
@@ -400,12 +403,48 @@ if cat=="Carteira":
             fig = px.bar(
             pfpj,
             x="AnoMes",         # Eixo horizontal
-            y="Saldo",          # Eixo vertical
+            y="Porcentagem",          # Eixo vertical
             color="NomeColuna",       # Categorias empilhadas
             title="Distribução carteira PF e PJ por duração",
             labels={"AnoMes": "Ano e Mês", "Saldo": "Saldo (em R$)", "grupo": "Duração"})
             fig.update_layout(barmode="stack", xaxis_title="Ano e Mês", yaxis_title="Saldo")
             fig.update_layout(xaxis={'categoryorder': 'array', 'categoryarray': pfpj['AnoMes'].tolist()})
+            st.plotly_chart(fig)
+
+
+
+            carteira_tam_pj = carteira_tam_pj[carteira_tam_pj["Empresa"]==filtro_unico]
+            fig = px.bar(
+            carteira_tam_pj,
+            x="AnoMes",         # Eixo horizontal
+            y="Saldo",          # Eixo vertical
+            color="NomeColuna",       # Categorias empilhadas
+            title="Carteira PJ por tamanho",
+            labels={"AnoMes": "Ano e Mês", "Saldo": "Saldo (em R$)", "grupo": "Duração"})
+            fig.update_layout(barmode="stack", xaxis_title="Ano e Mês", yaxis_title="Saldo")
+            fig.update_layout(xaxis={'categoryorder': 'array', 'categoryarray': carteira_tam_pj['AnoMes'].tolist()})
+            st.plotly_chart(fig)
+
+
+
+            tampj = carteira_tam_pj.reset_index(drop=True)
+            listtri = list(tampj['AnoMes'].unique())
+            soma = [0] * len(listtri)
+            for i in range(len(tampj)):
+                if abs(tampj['Saldo'].iloc[i]) > 0:
+                    soma[listtri.index(tampj['AnoMes'].iloc[i])] += tampj['Saldo'].iloc[i]
+            for i in range(len(tampj)):
+                tampj.loc[i, 'Saldo'] /= soma[listtri.index(tampj.loc[i, 'AnoMes'])]
+
+            fig = px.bar(
+            tampj,
+            x="AnoMes",         # Eixo horizontal
+            y="Porcentagem",          # Eixo vertical
+            color="NomeColuna",       # Categorias empilhadas
+            title="Distribuição da carteira PJ por tamanho",
+            labels={"AnoMes": "Ano e Mês", "Saldo": "Saldo (em R$)", "grupo": "Duração"})
+            fig.update_layout(barmode="stack", xaxis_title="Ano e Mês", yaxis_title="Saldo")
+            fig.update_layout(xaxis={'categoryorder': 'array', 'categoryarray': tampj['AnoMes'].tolist()})
             st.plotly_chart(fig)
 
 
@@ -953,3 +992,4 @@ if cat=="Passivo":
             fig.update_layout(barmode="stack", xaxis_title="Ano e Mês", yaxis_title="Saldo")
             fig.update_layout(xaxis={'categoryorder': 'array', 'categoryarray': passivoacd['AnoMes'].tolist()})
             st.plotly_chart(fig)
+
