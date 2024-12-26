@@ -4,6 +4,7 @@ import re
 import plotly.express as px
 import plotly.graph_objects as go
 st.set_page_config(layout='wide', initial_sidebar_state='expanded')
+from screeninfo import get_monitors
 
 path = "C:/Users/vini/OneDrive - Heritage Capital Partners/Network/Analises/03_Bancos/Dash/bases/"
 
@@ -32,6 +33,16 @@ links = []
 for i in range(len(links0)):
     links.append([links0[i][0], f'https://drive.google.com/uc?id={re.search(r'd/([^/]+)', links0[i][1]).group(1)}'])
 
+if get_monitors()[0].width > 900:
+    tela = 1
+else:
+    tela = 2
+
+def abreviar(col):
+    if tela == 2:
+        return col.apply(lambda x: str(x)[:9] + '...' if len(str(x)) >= 11 else str(x))
+    else:
+        return col.apply(lambda x: str(x)[:25] + '...' if len(str(x)) >= 29 else str(x)) 
 
 html = f"""
     <style>
@@ -74,6 +85,8 @@ if cat=="Principais indicadores":
                 resumo_financeiro_invertido = resumo_financeiro.iloc[::-1]
             capital_resumo_filtrado = capital_resumo[capital_resumo["Empresa"].isin(filtro)]
             capital_resumo_filtrado = capital_resumo_filtrado[capital_resumo_filtrado["Nome"]=="CET1"]
+            capital_resumo_filtrado['Empresa'] = abreviar(capital_resumo_filtrado['Empresa'])
+
             fig = px.line(
             capital_resumo_filtrado,
             x='AnoMes',  # Eixo X
@@ -84,8 +97,12 @@ if cat=="Principais indicadores":
             )
             fig.update_yaxes(tickformat=".1%", title="Porcentagem")
             st.plotly_chart(fig)
+
+
+
             capital_resumo_filtrado= capital_resumo[capital_resumo["Empresa"].isin(filtro)]
             capital_resumo_filtrado= capital_resumo_filtrado[capital_resumo_filtrado["Nome"]=="basileia"]
+            capital_resumo_filtrado['Empresa'] = abreviar(capital_resumo_filtrado['Empresa'])
             fig = px.line(
             capital_resumo_filtrado,
             x='AnoMes',  # Eixo X
@@ -97,8 +114,10 @@ if cat=="Principais indicadores":
             fig.update_yaxes(tickformat=".1%")
             st.plotly_chart(fig)
         
+
             resumo_financeiro_filtrado=resumo_financeiro_invertido[resumo_financeiro_invertido["Empresa"].isin(filtro)]
             resumo_financeiro_filtrado= resumo_financeiro_filtrado[resumo_financeiro_filtrado["NomeColuna"]=="ROAE"]
+            resumo_financeiro_filtrado['Empresa'] = abreviar(resumo_financeiro_filtrado['Empresa'])
 
             fig = px.bar(
             resumo_financeiro_filtrado,
@@ -109,8 +128,12 @@ if cat=="Principais indicadores":
             labels={'AnoMes': 'Ano e Mês', 'Saldo': 'ROAE'}, barmode='group')
             fig.update_yaxes(tickformat=".1%", title="Porcentagem")
             st.plotly_chart(fig)
+
+
+
             resumo_financeiro_filtrado= resumo_financeiro_invertido[resumo_financeiro_invertido["Empresa"].isin(filtro)]
             resumo_financeiro_filtrado= resumo_financeiro_filtrado[resumo_financeiro_filtrado["NomeColuna"]=="Lucro liquido trimestral"]
+            resumo_financeiro_filtrado['Empresa'] = abreviar(resumo_financeiro_filtrado['Empresa'])
 
             fig = px.bar(
             resumo_financeiro_filtrado,
@@ -121,8 +144,12 @@ if cat=="Principais indicadores":
             labels={'AnoMes': 'Tri', 'Saldo': 'Lucro Líquido'}, barmode='group')
             st.plotly_chart(fig)
 
+
+
             carteiracla = resumo_financeiro[resumo_financeiro["Empresa"].isin(filtro)]
             carteiracla = carteiracla[carteiracla['NomeColuna'] == 'Carteira de Credito Classificada'].reset_index(drop=True)
+            carteiracla['Empresa'] = abreviar(carteiracla['Empresa'])
+
             fig = px.line(
             carteiracla,
             x='AnoMes',  # Eixo X
@@ -141,6 +168,8 @@ if cat=="Principais indicadores":
                 capital_resumo = pd.read_csv(next(link for nome, link in links if nome == 'capital.csv'))
                 resumo_financeiro = pd.read_csv(next(link for nome, link in links if nome == 'resumo_consolidado.csv'))
             capital_resumo_filtrado= capital_resumo[capital_resumo["Empresa"]==filtro_unico]
+            capital_resumo_filtrado['NomeColuna'] = abreviar(capital_resumo_filtrado['NomeColuna'])
+
             fig = px.bar(
             capital_resumo_filtrado[capital_resumo_filtrado["Nome"].isin(['CET1', 'AT1', 'tier_2'])],
             x="AnoMes",         # Eixo horizontal
@@ -148,11 +177,11 @@ if cat=="Principais indicadores":
             color="Nome",       # Categorias empilhadas
             title="Decomposição Capital",
             labels={"AnoMes": "Ano e Mês", "Saldo": "Saldo", "grupo": "Grupo"})
-
-            # Configurando o layout do gráfico
             fig.update_layout(barmode="stack", xaxis_title="Ano e Mês", yaxis_title="Saldo")
             fig.update_yaxes(tickformat=".1%")
             st.plotly_chart(fig)
+
+
 
             rwa = resumo_financeiro[resumo_financeiro["Empresa"]==filtro_unico].reset_index(drop=True)
             indice = [1] * len(trimestres)
@@ -171,17 +200,18 @@ if cat=="Principais indicadores":
                     rwa.loc[len(rwa)] = x
 
             cols = ['Patrimonio de Referencia para Comparacao com o RWA', 'Ativos Ponderados pelo Risco (RWA)']
+            cols = list(abreviar(pd.DataFrame(cols)[0]))
+            rwa['NomeColuna'] = abreviar(rwa['NomeColuna'])
             rwa_2 = rwa[rwa["NomeColuna"].isin(cols)]
+
             fig = px.line(
             rwa_2,
             x='AnoMes',  # Eixo X
             y='Saldo',  # Eixo Y
             color='NomeColuna',  # Colorir as linhas por empresa
             title='Basileia',  # Título do gráfico
-            labels={'AnoMes': 'Ano e Mês', 'Saldo': 'Saldo'}
-            )
+            labels={'AnoMes': 'Ano e Mês', 'Saldo': 'Saldo'})
             
-
             basi = rwa[rwa["NomeColuna"] == 'Indice de Basileia']
             fig.add_trace(
                 go.Scatter(
@@ -189,11 +219,10 @@ if cat=="Principais indicadores":
                     y=basi['Saldo'],  # Eixo Y secundário
                     mode='lines',
                     name='Indice de Basileia',  # Nome da linha
-                    yaxis='y2'  # Definir este trace para usar o eixo Y secundário
+                    yaxis='y2'
                 )
             )
 
-            # Configurar o eixo Y secundário
             fig.update_layout(
                 yaxis2=dict(
                     title='Indice de Basileia',  # Título do eixo Y secundário
@@ -202,8 +231,6 @@ if cat=="Principais indicadores":
                     tickformat=".2f"  # Formato de exibição para o eixo Y secundário
                 )
             )
-
-            # Exibir o gráfico
             st.plotly_chart(fig)
 
 
@@ -258,57 +285,62 @@ if cat=="Carteira":
 
         carteira_tam_pj = pd.read_csv(next(link for nome, link in links if nome == 'carteira_tam_pj.csv'))
 
+        
 
         col1, col2 = st.columns(2)
         with col1:
+
             selecao_eh=eh_historico[eh_historico["Empresa"].isin(filtro)]
+            selecao_eh['Empresa'] = abreviar(selecao_eh['Empresa'])
+
             fig = px.line(
             selecao_eh,
             x='AnoMes',  # Eixo X
             y='Saldo_Percentual',  # Eixo Y
             color='Empresa',  # Colorir as linhas por empresa
             title='% EH',  # Título do gráfico
-            labels={'AnoMes': 'Ano e Mês', 'Saldo_Percentual': 'Saldo Percentual'}
-        )
+            labels={'AnoMes': 'Ano e Mês', 'Saldo_Percentual': 'Saldo Percentual'})
             fig.update_yaxes(tickformat=".1%", title="Porcentagem")
-            
             st.plotly_chart(fig)
-            
-        with col2:
-            resumo_risco_filtrado=resumo_risco[resumo_risco["Empresa"]==filtro_unico]
-            resumo_risco_filtrado = resumo_risco_filtrado.drop_duplicates(subset=['NomeColuna', 'Empresa', 'AnoMes'])
-            resumo_risco_filtrado=resumo_risco_filtrado[resumo_risco_filtrado["AnoMes"]==data]
-            fig = px.pie(resumo_risco_filtrado, values="Saldo_Percentual", names="NomeColuna", title="Distribuição do risco")
-            fig.update_layout(xaxis={'categoryorder': 'array', 'categoryarray': resumo_risco_filtrado['AnoMes'].tolist()})
-            st.plotly_chart(fig)
-            # Exibindo o gráfico no Streamlit
 
-        #%%#
-        col1, col2 = st.columns(2)
-        with col1:
+
+
             selecao_perc=perc_pf[perc_pf["Empresa"].isin(filtro)]
+            selecao_perc['Empresa'] = abreviar(selecao_perc['Empresa'])
+
             fig = px.line(
             selecao_perc,
             x='AnoMes',  # Eixo X
             y='percentual_pf',  # Eixo Y
             color='Empresa',  # Colorir as linhas por empresa
             title='% Carteira PF',  # Título do gráfico
-            labels={'AnoMes': 'Ano e Mês', 'Saldo_Percentual': '% PF'}
-        )
+            labels={'AnoMes': 'Ano e Mês', 'Saldo_Percentual': '% PF'})
             fig.update_yaxes(tickformat=".1%", title="Porcentagem")
             fig.update_layout(xaxis={'categoryorder': 'array', 'categoryarray': selecao_perc['AnoMes'].tolist()})
             st.plotly_chart(fig)
 
 
         with col2:
+            resumo_risco_filtrado=resumo_risco[resumo_risco["Empresa"]==filtro_unico]
+            resumo_risco_filtrado = resumo_risco_filtrado.drop_duplicates(subset=['NomeColuna', 'Empresa', 'AnoMes'])
+            resumo_risco_filtrado=resumo_risco_filtrado[resumo_risco_filtrado["AnoMes"]==data]
+            resumo_risco_filtrado['NomeColuna'] = abreviar(resumo_risco_filtrado['NomeColuna'])
+            fig = px.pie(resumo_risco_filtrado, values="Saldo_Percentual", names="NomeColuna", title="Distribuição do risco")
+            fig.update_layout(xaxis={'categoryorder': 'array', 'categoryarray': resumo_risco_filtrado['AnoMes'].tolist()})
+            st.plotly_chart(fig)
+
+
             resumo_geografico_filtrado=resumo_geografico[resumo_geografico["Empresa"]==filtro_unico]
             resumo_geografico_filtrado=resumo_geografico_filtrado[resumo_geografico_filtrado["AnoMes"]==data]
+            resumo_geografico_filtrado['NomeColuna'] = abreviar(resumo_geografico_filtrado['NomeColuna'])
             fig = px.pie(resumo_geografico_filtrado, values="Saldo_Percentual", names="NomeColuna", title="Distribuição Geográfica")
             fig.update_layout(xaxis={'categoryorder': 'array', 'categoryarray': resumo_geografico_filtrado['AnoMes'].tolist()})
             st.plotly_chart(fig)
 
 
             carteira_pf_filtrada=carteira_pf[carteira_pf["Empresa"]==filtro_unico]
+            carteira_pf_filtrada['Grupo'] = abreviar(carteira_pf_filtrada['Grupo'])
+
             fig = px.bar(
             carteira_pf_filtrada,
             x="AnoMes",         # Eixo horizontal
@@ -337,13 +369,15 @@ if cat=="Carteira":
             y="Saldo",          # Eixo vertical
             color="Grupo",       # Categorias empilhadas
             title="Distribução carteira PF por tipo",
-            labels={"AnoMes": "Ano e Mês", "Saldo": "Porcentagem", "grupo": "Grupo"})
+            labels={"AnoMes": "Ano e Mês", "Saldo": "Saldo (em R$)", "grupo": "Grupo"})
             fig.update_layout(barmode="stack", xaxis_title="Ano e Mês", yaxis_title="Saldo")
             fig.update_layout(xaxis={'categoryorder': 'array', 'categoryarray': pf['AnoMes'].tolist()})
             st.plotly_chart(fig)
 
 
             carteira_pj_filtrada=carteira_pj[carteira_pj["Empresa"]==filtro_unico]
+            carteira_pj_filtrada['Grupo'] = abreviar(carteira_pj_filtrada['Grupo'])
+
             fig = px.bar(
             carteira_pj_filtrada,
             x="AnoMes",         # Eixo horizontal
@@ -371,13 +405,16 @@ if cat=="Carteira":
             y="Saldo",          # Eixo vertical
             color="Grupo",       # Categorias empilhadas
             title="Distribuição carteira Pj por tipo",
-            labels={"AnoMes": "Ano e Mês", "Saldo": "Porcentagem", "grupo": "Grupo"})
+            labels={"AnoMes": "Ano e Mês", "Saldo": "Saldo (em R$)", "grupo": "Grupo"})
             fig.update_layout(barmode="stack", xaxis_title="Ano e Mês", yaxis_title="Saldo")
             fig.update_layout(xaxis={'categoryorder': 'array', 'categoryarray': pj['AnoMes'].tolist()})
             st.plotly_chart(fig)
 
 
             carteirapfpj = carteirapfpj[carteirapfpj["Empresa"]==filtro_unico]
+            carteirapfpj['NomeColuna'] = abreviar(carteirapfpj['NomeColuna'])
+
+
             fig = px.bar(
             carteirapfpj,
             x="AnoMes",         # Eixo horizontal
@@ -406,7 +443,7 @@ if cat=="Carteira":
             y="Saldo",          # Eixo vertical
             color="NomeColuna",       # Categorias empilhadas
             title="Distribução carteira PF e PJ por duração",
-            labels={"AnoMes": "Ano e Mês", "Saldo": "Porcentagem", "grupo": "Duração"})
+            labels={"AnoMes": "Ano e Mês", "Saldo": "Saldo (em R$)", "grupo": "Duração"})
             fig.update_layout(barmode="stack", xaxis_title="Ano e Mês", yaxis_title="Saldo")
             fig.update_layout(xaxis={'categoryorder': 'array', 'categoryarray': pfpj['AnoMes'].tolist()})
             st.plotly_chart(fig)
@@ -414,6 +451,8 @@ if cat=="Carteira":
 
 
             carteira_tam_pj = carteira_tam_pj[carteira_tam_pj["Empresa"]==filtro_unico]
+            carteira_tam_pj['NomeColuna'] = abreviar(carteira_tam_pj['NomeColuna'])
+
             fig = px.bar(
             carteira_tam_pj,
             x="AnoMes",         # Eixo horizontal
@@ -428,6 +467,7 @@ if cat=="Carteira":
 
 
             tampj = carteira_tam_pj.reset_index(drop=True)
+
             listtri = list(tampj['AnoMes'].unique())
             soma = [0] * len(listtri)
             for i in range(len(tampj)):
@@ -442,7 +482,7 @@ if cat=="Carteira":
             y="Saldo",          # Eixo vertical
             color="NomeColuna",       # Categorias empilhadas
             title="Distribuição da carteira PJ por tamanho",
-            labels={"AnoMes": "Ano e Mês", "Saldo": "Porcentagem", "grupo": "Duração"})
+            labels={"AnoMes": "Ano e Mês", "Saldo": "Saldo (em R$)", "grupo": "Duração"})
             fig.update_layout(barmode="stack", xaxis_title="Ano e Mês", yaxis_title="Saldo")
             fig.update_layout(xaxis={'categoryorder': 'array', 'categoryarray': tampj['AnoMes'].tolist()})
             st.plotly_chart(fig)
@@ -877,6 +917,7 @@ if cat=="Passivo":
 
         passivo = pd.read_csv(next(link for nome, link in links if nome == 'passivo.csv'))
 
+
         for i in passivo['NomeColuna'].unique():
             if 'aptac' in i:
                 col = i
@@ -884,21 +925,6 @@ if cat=="Passivo":
 
         passivocap = passivo[passivo["Empresa"].isin(empresas0)]
         passivocap = passivocap[passivocap['NomeColuna'] == col]
-
-        col1, col2 = st.columns(2)
-        with col1:
-
-            fig = px.line(
-            passivocap,
-            x='AnoMes',  # Eixo X
-            y='Saldo',  # Eixo Y
-            color='Empresa',  # Colorir as linhas por empresa
-            title='Captações totais',  # Título do gráfico
-            labels={'AnoMes': 'Ano e Mês', 'Saldo': '%'})
-
-            fig.update_layout(xaxis={'categoryorder': 'array', 'categoryarray': passivocap['AnoMes'].tolist()})
-            st.plotly_chart(fig)
-
 
 
         for i in passivo['NomeColuna'].unique():
@@ -919,11 +945,30 @@ if cat=="Passivo":
                 break
         cols = [col01,col02,col03,col04]
 
+
         passivoemp = passivo[passivo['Empresa'] == empresa] 
+
+        col1, col2 = st.columns(2)
+        with col1:
+
+            passivocap['Empresa'] = abreviar(passivocap['Empresa'])
+
+            fig = px.line(
+            passivocap,
+            x='AnoMes',  # Eixo X
+            y='Saldo',  # Eixo Y
+            color='Empresa',  # Colorir as linhas por empresa
+            title='Captações totais',  # Título do gráfico
+            labels={'AnoMes': 'Ano e Mês', 'Saldo': '%'})
+
+            fig.update_layout(xaxis={'categoryorder': 'array', 'categoryarray': passivocap['AnoMes'].tolist()})
+            st.plotly_chart(fig)
+
 
         with col2:
 
             passivoabcd = passivoemp[passivoemp["NomeColuna"].isin(cols)].reset_index(drop=True)
+            passivoabcd['NomeColuna'] = abreviar(passivoabcd['NomeColuna'])
 
             fig = px.bar(
             passivoabcd,
@@ -961,6 +1006,7 @@ if cat=="Passivo":
 
             cols = ['Depositos a Vista  (a1)', 'Depositos de Poupanca  (a2)', 'Depositos Interfinanceiros  (a3)', 'Depositos a Prazo  (a4)', 'Outros Depositos  (a5)', 'Depositos Outros  (a6)', 'Obrigacoes por Operacoes Compromissadas  (b)', 'Letras de Credito Imobiliario  (c1)', 'Letras de Credito do Agronegocio  (c2)', 'Letras Financeiras  (c3)', 'Obrigacoes por Titulos e Valores Mobiliarios no Exterior  (c4)', 'Outros Recursos de Aceites e Emissao de Titulos  (c5)', 'Obrigacoes por Emprestimos e Repasses  (d)']
             passivoacd = passivoemp[passivoemp["NomeColuna"].isin(cols)].reset_index(drop=True)
+            passivoacd['NomeColuna'] = abreviar(passivoacd['NomeColuna'])
 
             fig = px.bar(
             passivoacd,
@@ -992,4 +1038,3 @@ if cat=="Passivo":
             fig.update_layout(barmode="stack", xaxis_title="Ano e Mês", yaxis_title="Saldo")
             fig.update_layout(xaxis={'categoryorder': 'array', 'categoryarray': passivoacd['AnoMes'].tolist()})
             st.plotly_chart(fig)
-
