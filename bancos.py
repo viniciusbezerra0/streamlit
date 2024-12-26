@@ -334,10 +334,10 @@ if cat=="Carteira":
             fig = px.bar(
             pf,
             x="AnoMes",         # Eixo horizontal
-            y="Porcentagem",          # Eixo vertical
+            y="Saldo",          # Eixo vertical
             color="Grupo",       # Categorias empilhadas
             title="Distribução carteira PF por tipo",
-            labels={"AnoMes": "Ano e Mês", "Saldo": "Saldo (em R$)", "grupo": "Grupo"})
+            labels={"AnoMes": "Ano e Mês", "Saldo": "Porcentagem", "grupo": "Grupo"})
             fig.update_layout(barmode="stack", xaxis_title="Ano e Mês", yaxis_title="Saldo")
             fig.update_layout(xaxis={'categoryorder': 'array', 'categoryarray': pf['AnoMes'].tolist()})
             st.plotly_chart(fig)
@@ -368,10 +368,10 @@ if cat=="Carteira":
             fig = px.bar(
             pj,
             x="AnoMes",         # Eixo horizontal
-            y="Porcentagem",          # Eixo vertical
+            y="Saldo",          # Eixo vertical
             color="Grupo",       # Categorias empilhadas
             title="Distribuição carteira Pj por tipo",
-            labels={"AnoMes": "Ano e Mês", "Saldo": "Saldo (em R$)", "grupo": "Grupo"})
+            labels={"AnoMes": "Ano e Mês", "Saldo": "Porcentagem", "grupo": "Grupo"})
             fig.update_layout(barmode="stack", xaxis_title="Ano e Mês", yaxis_title="Saldo")
             fig.update_layout(xaxis={'categoryorder': 'array', 'categoryarray': pj['AnoMes'].tolist()})
             st.plotly_chart(fig)
@@ -403,10 +403,10 @@ if cat=="Carteira":
             fig = px.bar(
             pfpj,
             x="AnoMes",         # Eixo horizontal
-            y="Porcentagem",          # Eixo vertical
+            y="Saldo",          # Eixo vertical
             color="NomeColuna",       # Categorias empilhadas
             title="Distribução carteira PF e PJ por duração",
-            labels={"AnoMes": "Ano e Mês", "Saldo": "Saldo (em R$)", "grupo": "Duração"})
+            labels={"AnoMes": "Ano e Mês", "Saldo": "Porcentagem", "grupo": "Duração"})
             fig.update_layout(barmode="stack", xaxis_title="Ano e Mês", yaxis_title="Saldo")
             fig.update_layout(xaxis={'categoryorder': 'array', 'categoryarray': pfpj['AnoMes'].tolist()})
             st.plotly_chart(fig)
@@ -439,10 +439,10 @@ if cat=="Carteira":
             fig = px.bar(
             tampj,
             x="AnoMes",         # Eixo horizontal
-            y="Porcentagem",          # Eixo vertical
+            y="Saldo",          # Eixo vertical
             color="NomeColuna",       # Categorias empilhadas
             title="Distribuição da carteira PJ por tamanho",
-            labels={"AnoMes": "Ano e Mês", "Saldo": "Saldo (em R$)", "grupo": "Duração"})
+            labels={"AnoMes": "Ano e Mês", "Saldo": "Porcentagem", "grupo": "Duração"})
             fig.update_layout(barmode="stack", xaxis_title="Ano e Mês", yaxis_title="Saldo")
             fig.update_layout(xaxis={'categoryorder': 'array', 'categoryarray': tampj['AnoMes'].tolist()})
             st.plotly_chart(fig)
