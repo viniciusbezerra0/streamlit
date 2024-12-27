@@ -166,10 +166,14 @@ if cat=="Principais indicadores":
             dre = dre[dre['NomeColuna'].str.contains('ifici', na=False)].reset_index(drop=True)
             dre['Empresa'] = abreviar(dre['Empresa'])
             saldo = []
+            '''
             for i in range(len(dre)):
                 saldo.append(2*dre['Saldo'][i]/(carteiracla['Saldo'][i] + carteiracla['Saldo'][i+1]))
             ncr = dre.copy()
             ncr['Saldo'] = pd.DataFrame(saldo)
+            '''
+            dre
+            carteiracla
 
             fig = px.line(
             ncr,
