@@ -219,8 +219,7 @@ if cat=="Principais indicadores":
                     y=basi['Saldo'],  # Eixo Y secundário
                     mode='lines',
                     name='Indice de Basileia',  # Nome da linha
-                    yaxis='y2',
-                    tickformat=".0%"
+                    yaxis='y2'
                 )
             )
 
@@ -229,7 +228,7 @@ if cat=="Principais indicadores":
                     title='Indice de Basileia',  # Título do eixo Y secundário
                     overlaying='y',  # Este eixo sobrepõe o eixo Y principal
                     side='right',  # Colocar o eixo à direita
-                    tickformat=".2f"  # Formato de exibição para o eixo Y secundário
+                    tickformat=".0%"  # Formato de exibição para o eixo Y secundário
                 )
             )
             st.plotly_chart(fig)
