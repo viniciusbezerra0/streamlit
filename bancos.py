@@ -4,7 +4,7 @@ import re
 import plotly.express as px
 import plotly.graph_objects as go
 st.set_page_config(layout='wide', initial_sidebar_state='expanded')
-from screeninfo import get_monitors
+from streamlit_javascript import st_javascript
 
 path = "C:/Users/vini/OneDrive - Heritage Capital Partners/Network/Analises/03_Bancos/Dash/bases/"
 
@@ -33,13 +33,10 @@ links = []
 for i in range(len(links0)):
     links.append([links0[i][0], f'https://drive.google.com/uc?id={re.search(r'd/([^/]+)', links0[i][1]).group(1)}'])
 
-'''
-if get_monitors()[0].width > 900:
+if 'indows' in st_javascript("""window.navigator.userAgent;"""):
     tela = 1
 else:
     tela = 2
-'''
-tela = 1
 
 def abreviar(col):
     if tela == 2:
