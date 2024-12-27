@@ -163,7 +163,7 @@ if cat=="Principais indicadores":
 
             dre = pd.read_csv(next(link for nome, link in links if nome == 'dre.csv'))
             dre = dre[dre["Empresa"].isin(filtro)][1:]
-            dre = dre[dre['NomeColuna'].str.contains('ifici', na=False)]
+            dre = dre[dre['NomeColuna'].str.contains('ifici', na=False)].reset_index(drop=True)
             dre['Empresa'] = abreviar(dre['Empresa'])
             saldo = []
             for i in range(len(dre)):
