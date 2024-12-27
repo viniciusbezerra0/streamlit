@@ -95,7 +95,7 @@ if cat=="Principais indicadores":
             title='CET1',  # Título do gráfico
             labels={'AnoMes': 'Ano e Mês', 'Saldo': '%'}
             )
-            fig.update_yaxes(tickformat=".1%", title="Porcentagem")
+            fig.update_yaxes(tickformat=".0%", title=None)
             st.plotly_chart(fig)
 
 
@@ -111,7 +111,7 @@ if cat=="Principais indicadores":
             title='Basileia',  # Título do gráfico
             labels={'AnoMes': 'Ano e Mês', 'Saldo': '%'}
             )
-            fig.update_yaxes(tickformat=".1%")
+            fig.update_yaxes(tickformat=".0%", title=None)
             st.plotly_chart(fig)
         
 
@@ -126,7 +126,7 @@ if cat=="Principais indicadores":
             color='Empresa',  # Colorir as linhas por empresa
             title='ROAE',  # Título do gráfico
             labels={'AnoMes': 'Ano e Mês', 'Saldo': 'ROAE'}, barmode='group')
-            fig.update_yaxes(tickformat=".1%", title="Porcentagem")
+            fig.update_yaxes(tickformat=".0%", title=None)
             st.plotly_chart(fig)
 
 
@@ -178,7 +178,7 @@ if cat=="Principais indicadores":
             title="Decomposição Capital",
             labels={"AnoMes": "Ano e Mês", "Saldo": "Saldo", "grupo": "Grupo"})
             fig.update_layout(barmode="stack", xaxis_title="Ano e Mês", yaxis_title="Saldo")
-            fig.update_yaxes(tickformat=".1%")
+            fig.update_yaxes(tickformat=".0%", title=None)
             st.plotly_chart(fig)
 
 
@@ -219,7 +219,8 @@ if cat=="Principais indicadores":
                     y=basi['Saldo'],  # Eixo Y secundário
                     mode='lines',
                     name='Indice de Basileia',  # Nome da linha
-                    yaxis='y2'
+                    yaxis='y2',
+                    tickformat=".0%"
                 )
             )
 
@@ -300,7 +301,7 @@ if cat=="Carteira":
             color='Empresa',  # Colorir as linhas por empresa
             title='% EH',  # Título do gráfico
             labels={'AnoMes': 'Ano e Mês', 'Saldo_Percentual': 'Saldo Percentual'})
-            fig.update_yaxes(tickformat=".1%", title="Porcentagem")
+            fig.update_yaxes(tickformat=".0%", title=None)
             st.plotly_chart(fig)
 
 
@@ -315,7 +316,7 @@ if cat=="Carteira":
             color='Empresa',  # Colorir as linhas por empresa
             title='% Carteira PF',  # Título do gráfico
             labels={'AnoMes': 'Ano e Mês', 'Saldo_Percentual': '% PF'})
-            fig.update_yaxes(tickformat=".1%", title="Porcentagem")
+            fig.update_yaxes(tickformat=".0%", title=None)
             fig.update_layout(xaxis={'categoryorder': 'array', 'categoryarray': selecao_perc['AnoMes'].tolist()})
             st.plotly_chart(fig)
 
@@ -372,7 +373,7 @@ if cat=="Carteira":
             labels={"AnoMes": "Ano e Mês", "Saldo": "Saldo (em R$)", "grupo": "Grupo"})
             fig.update_layout(barmode="stack", xaxis_title="Ano e Mês", yaxis_title="%")
             fig.update_layout(xaxis={'categoryorder': 'array', 'categoryarray': pf['AnoMes'].tolist()})
-            fig.update_yaxes(tickformat=".1%", title="Porcentagem")
+            fig.update_yaxes(tickformat=".0%", title=None)
             st.plotly_chart(fig)
 
 
@@ -409,7 +410,7 @@ if cat=="Carteira":
             labels={"AnoMes": "Ano e Mês", "Saldo": "Saldo (em R$)", "grupo": "Grupo"})
             fig.update_layout(barmode="stack", xaxis_title="Ano e Mês", yaxis_title="%")
             fig.update_layout(xaxis={'categoryorder': 'array', 'categoryarray': pj['AnoMes'].tolist()})
-            fig.update_yaxes(tickformat=".1%", title="Porcentagem")
+            fig.update_yaxes(tickformat=".0%", title=None)
             st.plotly_chart(fig)
 
 
@@ -448,7 +449,7 @@ if cat=="Carteira":
             labels={"AnoMes": "Ano e Mês", "Saldo": "Saldo (em R$)", "grupo": "Duração"})
             fig.update_layout(barmode="stack", xaxis_title="Ano e Mês", yaxis_title="%")
             fig.update_layout(xaxis={'categoryorder': 'array', 'categoryarray': pfpj['AnoMes'].tolist()})
-            fig.update_yaxes(tickformat=".1%", title="Porcentagem")
+            fig.update_yaxes(tickformat=".0%", title=None)
             st.plotly_chart(fig)
 
 
@@ -488,7 +489,7 @@ if cat=="Carteira":
             labels={"AnoMes": "Ano e Mês", "Saldo": "Saldo (em R$)", "grupo": "Duração"})
             fig.update_layout(barmode="stack", xaxis_title="Ano e Mês", yaxis_title="%")
             fig.update_layout(xaxis={'categoryorder': 'array', 'categoryarray': tampj['AnoMes'].tolist()})
-            fig.update_yaxes(tickformat=".1%", title="Porcentagem")
+            fig.update_yaxes(tickformat=".0%", title=None)
             st.plotly_chart(fig)
 
 
@@ -1004,7 +1005,7 @@ if cat=="Passivo":
             labels={"AnoMes": "Ano e Mês", "Saldo": "Saldo (em R$)", "NomeColuna": "Grupo"})
             fig.update_layout(barmode="stack", xaxis_title="Ano e Mês", yaxis_title="Saldo")
             fig.update_layout(xaxis={'categoryorder': 'array', 'categoryarray': passivoabcd['AnoMes'].tolist()})
-            fig.update_yaxes(tickformat=".1%", title="Porcentagem")
+            fig.update_yaxes(tickformat=".0%", title=None)
             st.plotly_chart(fig)
 
 
@@ -1042,5 +1043,5 @@ if cat=="Passivo":
             labels={"AnoMes": "Ano e Mês", "Saldo": "Saldo (em R$)", "NomeColuna": "Grupo"})
             fig.update_layout(barmode="stack", xaxis_title="Ano e Mês", yaxis_title="Saldo")
             fig.update_layout(xaxis={'categoryorder': 'array', 'categoryarray': passivoacd['AnoMes'].tolist()})
-            fig.update_yaxes(tickformat=".1%", title="Porcentagem")
+            fig.update_yaxes(tickformat=".0%", title=None)
             st.plotly_chart(fig)
