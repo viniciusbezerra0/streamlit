@@ -412,10 +412,10 @@ if cat=="Carteira":
             fig.update_yaxes(tickformat=".0%", title=None)
             st.plotly_chart(fig)
 
-
+            
+            carteirapfpj['NomeColuna'] = carteirapfpj['NomeColuna'].apply(lambda x: x.replace('15', 'Vencido há <  de 15'))
             carteirapfpj = carteirapfpj[carteirapfpj["Empresa"]==filtro_unico]
             carteirapfpj['NomeColuna'] = abreviar(carteirapfpj['NomeColuna'])
-
 
             fig = px.bar(
             carteirapfpj,
