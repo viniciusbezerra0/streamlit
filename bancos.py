@@ -181,7 +181,7 @@ if cat=="Principais indicadores":
             color='Empresa',  # Colorir as linhas por empresa
             title='Net Cost of Risk',  # Título do gráfico
             labels={'AnoMes': 'Ano e Mês', 'Saldo': 'Saldo'})
-            fig.update_yaxes(tickformat=".0%", title=None)
+            fig.update_yaxes(tickformat=".1%", title=None)
             st.plotly_chart(fig)
 
 
