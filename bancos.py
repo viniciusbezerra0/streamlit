@@ -33,10 +33,13 @@ links = []
 for i in range(len(links0)):
     links.append([links0[i][0], f'https://drive.google.com/uc?id={re.search(r'd/([^/]+)', links0[i][1]).group(1)}'])
 
+'''
 if get_monitors()[0].width > 900:
     tela = 1
 else:
     tela = 2
+'''
+tela = 1
 
 def abreviar(col):
     if tela == 2:
