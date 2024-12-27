@@ -1,2 +1,2 @@
 plotly
-screeninfo
+streamlit_javascript
