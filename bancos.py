@@ -361,7 +361,7 @@ if cat=="Carteira":
                 if abs(pf['Saldo'].iloc[i]) > 0:
                     soma[listtri.index(pf['AnoMes'].iloc[i])] += pf['Saldo'].iloc[i]
             for i in range(len(pf)):
-                pf.loc[i, 'Saldo'] /= soma[listtri.index(pf.loc[i, 'AnoMes'])]
+                pf.loc[i, 'Saldo'] /= 100*soma[listtri.index(pf.loc[i, 'AnoMes'])]
 
             fig = px.bar(
             pf,
@@ -370,7 +370,7 @@ if cat=="Carteira":
             color="Grupo",       # Categorias empilhadas
             title="Distribução carteira PF por tipo",
             labels={"AnoMes": "Ano e Mês", "Saldo": "Saldo (em R$)", "grupo": "Grupo"})
-            fig.update_layout(barmode="stack", xaxis_title="Ano e Mês", yaxis_title="Saldo")
+            fig.update_layout(barmode="stack", xaxis_title="Ano e Mês", yaxis_title="%")
             fig.update_layout(xaxis={'categoryorder': 'array', 'categoryarray': pf['AnoMes'].tolist()})
             st.plotly_chart(fig)
 
@@ -397,7 +397,7 @@ if cat=="Carteira":
                 if abs(pj['Saldo'].iloc[i]) > 0:
                     soma[listtri.index(pj['AnoMes'].iloc[i])] += pj['Saldo'].iloc[i]
             for i in range(len(pj)):
-                pj.loc[i, 'Saldo'] /= soma[listtri.index(pj.loc[i, 'AnoMes'])]
+                pj.loc[i, 'Saldo'] /= 100*soma[listtri.index(pj.loc[i, 'AnoMes'])]
 
             fig = px.bar(
             pj,
@@ -406,7 +406,7 @@ if cat=="Carteira":
             color="Grupo",       # Categorias empilhadas
             title="Distribuição carteira Pj por tipo",
             labels={"AnoMes": "Ano e Mês", "Saldo": "Saldo (em R$)", "grupo": "Grupo"})
-            fig.update_layout(barmode="stack", xaxis_title="Ano e Mês", yaxis_title="Saldo")
+            fig.update_layout(barmode="stack", xaxis_title="Ano e Mês", yaxis_title="%")
             fig.update_layout(xaxis={'categoryorder': 'array', 'categoryarray': pj['AnoMes'].tolist()})
             st.plotly_chart(fig)
 
@@ -435,7 +435,7 @@ if cat=="Carteira":
                 if abs(pfpj['Saldo'].iloc[i]) > 0:
                     soma[listtri.index(pfpj['AnoMes'].iloc[i])] += pfpj['Saldo'].iloc[i]
             for i in range(len(pfpj)):
-                pfpj.loc[i, 'Saldo'] /= soma[listtri.index(pfpj.loc[i, 'AnoMes'])]
+                pfpj.loc[i, 'Saldo'] /= 100*soma[listtri.index(pfpj.loc[i, 'AnoMes'])]
 
             fig = px.bar(
             pfpj,
@@ -444,7 +444,7 @@ if cat=="Carteira":
             color="NomeColuna",       # Categorias empilhadas
             title="Distribução carteira PF e PJ por duração",
             labels={"AnoMes": "Ano e Mês", "Saldo": "Saldo (em R$)", "grupo": "Duração"})
-            fig.update_layout(barmode="stack", xaxis_title="Ano e Mês", yaxis_title="Saldo")
+            fig.update_layout(barmode="stack", xaxis_title="Ano e Mês", yaxis_title="%")
             fig.update_layout(xaxis={'categoryorder': 'array', 'categoryarray': pfpj['AnoMes'].tolist()})
             st.plotly_chart(fig)
 
@@ -474,7 +474,7 @@ if cat=="Carteira":
                 if abs(tampj['Saldo'].iloc[i]) > 0:
                     soma[listtri.index(tampj['AnoMes'].iloc[i])] += tampj['Saldo'].iloc[i]
             for i in range(len(tampj)):
-                tampj.loc[i, 'Saldo'] /= soma[listtri.index(tampj.loc[i, 'AnoMes'])]
+                tampj.loc[i, 'Saldo'] /= 100*soma[listtri.index(tampj.loc[i, 'AnoMes'])]
 
             fig = px.bar(
             tampj,
@@ -483,7 +483,7 @@ if cat=="Carteira":
             color="NomeColuna",       # Categorias empilhadas
             title="Distribuição da carteira PJ por tamanho",
             labels={"AnoMes": "Ano e Mês", "Saldo": "Saldo (em R$)", "grupo": "Duração"})
-            fig.update_layout(barmode="stack", xaxis_title="Ano e Mês", yaxis_title="Saldo")
+            fig.update_layout(barmode="stack", xaxis_title="Ano e Mês", yaxis_title="%")
             fig.update_layout(xaxis={'categoryorder': 'array', 'categoryarray': tampj['AnoMes'].tolist()})
             st.plotly_chart(fig)
 
