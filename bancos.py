@@ -161,6 +161,27 @@ if cat=="Principais indicadores":
             st.plotly_chart(fig)
 
 
+            dre = pd.read_csv(next(link for nome, link in links if nome == 'dre.csv'))
+            dre = dre[dre["Empresa"].isin(filtro)][1:]
+            dre = dre[dre['NomeColuna'].str.contains('ifici', na=False)]
+            dre['Empresa'] = abreviar(dre['Empresa'])
+            saldo = []
+            for i in range(len(dre)):
+                saldo.append(2*dre['Saldo'][i]/(carteiracla['Saldo'][i] + carteiracla['Saldo'][i+1]))
+            ncr = dre.copy()
+            ncr['Saldo'] = pd.DataFrame(saldo)
+
+            fig = px.line(
+            ncr,
+            x='AnoMes',  # Eixo X
+            y='Saldo',  # Eixo Y
+            color='Empresa',  # Colorir as linhas por empresa
+            title='Net Cost of Risk',  # Título do gráfico
+            labels={'AnoMes': 'Ano e Mês', 'Saldo': 'Saldo'})
+            fig.update_yaxes(tickformat=".0%", title=None)
+            st.plotly_chart(fig)
+
+
     with col2:
         filtro_unico=st.selectbox("", ["Selecione a empresa"] + empresas)
         if filtro_unico != "Selecione a empresa":
