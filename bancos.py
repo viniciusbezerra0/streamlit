@@ -10,7 +10,7 @@ path = "C:/Users/vini/OneDrive - Heritage Capital Partners/Network/Analises/03_B
 
 #streamlit run "C:/Users/vini/OneDrive - Heritage Capital Partners/Network/Analises/03_Bancos/Dash/bancos-vinicius.py"
 
-image_path = "https://www.dropbox.com/scl/fi/3gra61tqh9pstrav9dyfs/logo.png?rlkey=3yayojmnxi56nm12mjzzv46lv&st=692dwho6&dl=1"
+image_path = "https://www.dropbox.com/scl/fi/2km89g1wttb2uom7lomtd/logo.png?rlkey=xi6g55qx6tocgm0dj2sjfnmnz&st=rrox563t&dl=0"
 
 links0 = [['ativo.csv','https://drive.google.com/file/d/1pasfIKhQB9s7grPZLbRyynFRkN6AgQ76/view?usp=drive_link'],
        ['capital.csv','https://drive.google.com/file/d/13OJ7Q-GNhsjd41uUqki9mMhshva-FS4t/view?usp=drive_link'],
